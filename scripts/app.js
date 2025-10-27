@@ -16,10 +16,13 @@ let currentAudio = null;
 
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log('🚀 App initializing...');
     await loadData();
+    console.log(`📊 Loaded ${synonymsData.length} synonyms`);
     setupEventListeners();
     renderCards(synonymsData);
     loadHeroImage();
+    console.log('✅ App initialized successfully');
 });
 
 // Load JSON data
@@ -150,11 +153,17 @@ function renderCards(synonyms) {
     const grid = document.getElementById('cards-grid');
     const noResults = document.getElementById('no-results');
 
-    if (!grid) return;
+    console.log(`🎨 Rendering ${synonyms.length} cards...`);
+
+    if (!grid) {
+        console.error('❌ Grid element not found!');
+        return;
+    }
 
     grid.innerHTML = '';
 
     if (synonyms.length === 0) {
+        console.log('⚠️  No synonyms to render');
         if (noResults) noResults.style.display = 'block';
         return;
     }
@@ -165,6 +174,8 @@ function renderCards(synonyms) {
         const card = createCard(synonym, index);
         grid.appendChild(card);
     });
+
+    console.log(`✅ Rendered ${synonyms.length} cards`);
 }
 
 // Create synonym card
