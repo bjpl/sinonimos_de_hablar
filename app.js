@@ -218,7 +218,9 @@ function openModal(synonym) {
     const credit = imageCredits?.images?.[verbKey];
     const creditElement = document.getElementById('modal-image-credit');
     if (creditElement && credit) {
-        creditElement.innerHTML = `Foto por ${credit.photographer.name} en Unsplash`;
+        const photogName = credit.photographer?.name || credit.photographer;
+        const photogUrl = credit.photographer?.profile_url || credit.photo?.unsplash_url || '#';
+        creditElement.innerHTML = `Foto por <a href="${photogUrl}" target="_blank" rel="noopener">${photogName}</a> en Unsplash`;
     }
 
     const tagsContainer = document.getElementById('modal-tags');
@@ -273,6 +275,7 @@ function scrollToContent() {
 }
 
 // Make functions globally available
+window.openModal = openModal;
 window.closeModal = closeModal;
 window.scrollToContent = scrollToContent;
 
