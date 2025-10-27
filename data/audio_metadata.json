@@ -1,7 +1,117 @@
 {
-  "audio": {},
-  "generated_at": "2025-10-26",
-  "total_audio_files": 0,
+  "generated_at": "2025-10-26T22:30:00.000Z",
   "voice_provider": "ElevenLabs",
-  "voice_models": []
+  "voice_models": [
+    "neural-es-mx-male",
+    "neural-es-mx-female",
+    "neural-es-co-male"
+  ],
+  "verbs": {
+    "conversar": {
+      "file": "assets/audio/verbs/conversar.mp3",
+      "voice": "neural-es-mx-male",
+      "duration_ms": 800
+    },
+    "platicar": {
+      "file": "assets/audio/verbs/platicar.mp3",
+      "voice": "neural-es-mx-female",
+      "duration_ms": 850
+    },
+    "charlar": {
+      "file": "assets/audio/verbs/charlar.mp3",
+      "voice": "neural-es-co-male",
+      "duration_ms": 750
+    },
+    "dialogar": {
+      "file": "assets/audio/verbs/dialogar.mp3",
+      "voice": "neural-es-mx-male",
+      "duration_ms": 900
+    },
+    "departir": {
+      "file": "assets/audio/verbs/departir.mp3",
+      "voice": "neural-es-mx-female",
+      "duration_ms": 950
+    },
+    "discutir": {
+      "file": "assets/audio/verbs/discutir.mp3",
+      "voice": "neural-es-co-male",
+      "duration_ms": 850
+    },
+    "comunicar": {
+      "file": "assets/audio/verbs/comunicar.mp3",
+      "voice": "neural-es-mx-male",
+      "duration_ms": 1000
+    },
+    "expresarse": {
+      "file": "assets/audio/verbs/expresarse.mp3",
+      "voice": "neural-es-mx-female",
+      "duration_ms": 1100
+    },
+    "articular": {
+      "file": "assets/audio/verbs/articular.mp3",
+      "voice": "neural-es-co-male",
+      "duration_ms": 950
+    },
+    "pronunciar": {
+      "file": "assets/audio/verbs/pronunciar.mp3",
+      "voice": "neural-es-mx-male",
+      "duration_ms": 1050
+    },
+    "decir": {
+      "file": "assets/audio/verbs/decir.mp3",
+      "voice": "neural-es-mx-female",
+      "duration_ms": 700
+    },
+    "manifestar": {
+      "file": "assets/audio/verbs/manifestar.mp3",
+      "voice": "neural-es-co-male",
+      "duration_ms": 1050
+    },
+    "cotorrear": {
+      "file": "assets/audio/verbs/cotorrear.mp3",
+      "voice": "neural-es-mx-male",
+      "duration_ms": 950
+    },
+    "parlar": {
+      "file": "assets/audio/verbs/parlar.mp3",
+      "voice": "neural-es-mx-female",
+      "duration_ms": 750
+    }
+  },
+  "examples": {
+    "conversar": [
+      {
+        "file": "assets/audio/examples/conversar_example_1.mp3",
+        "voice": "neural-es-mx-male",
+        "text": "Me gusta conversar con mis amigos en el café"
+      },
+      {
+        "file": "assets/audio/examples/conversar_example_2.mp3",
+        "voice": "neural-es-mx-female",
+        "text": "Conversamos sobre nuestros planes para el fin de semana"
+      },
+      {
+        "file": "assets/audio/examples/conversar_example_3.mp3",
+        "voice": "neural-es-co-male",
+        "text": "Es importante conversar con la familia regularmente"
+      }
+    ],
+    "platicar": [
+      {
+        "file": "assets/audio/examples/platicar_example_1.mp3",
+        "voice": "neural-es-mx-male",
+        "text": "Vamos a platicar un rato después del trabajo"
+      },
+      {
+        "file": "assets/audio/examples/platicar_example_2.mp3",
+        "voice": "neural-es-mx-female",
+        "text": "Me encanta platicar contigo, siempre tienes historias interesantes"
+      },
+      {
+        "file": "assets/audio/examples/platicar_example_3.mp3",
+        "voice": "neural-es-co-male",
+        "text": "Platiquemos sobre lo que pasó ayer"
+      }
+    ]
+  }
 }
