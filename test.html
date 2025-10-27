@@ -41,7 +41,7 @@
             try {
                 // Test 1: Load synonyms
                 statusDiv.innerHTML += '<div class="status">Fetching synonyms.json...</div>';
-                const synonymsResponse = await fetch('./src/data/synonyms.json');
+                const synonymsResponse = await fetch('./data/synonyms.json');
                 statusDiv.innerHTML += `<div class="status ${synonymsResponse.ok ? 'success' : 'error'}">
                     Synonyms response: ${synonymsResponse.status} ${synonymsResponse.statusText}
                 </div>`;
@@ -53,7 +53,7 @@
 
                 // Test 2: Load image credits
                 statusDiv.innerHTML += '<div class="status">Fetching image_credits.json...</div>';
-                const creditsResponse = await fetch('./src/data/image_credits.json');
+                const creditsResponse = await fetch('./data/image_credits.json');
                 statusDiv.innerHTML += `<div class="status ${creditsResponse.ok ? 'success' : 'error'}">
                     Credits response: ${creditsResponse.status} ${creditsResponse.statusText}
                 </div>`;
@@ -66,7 +66,7 @@
 
                 // Test 3: Load audio metadata
                 statusDiv.innerHTML += '<div class="status">Fetching audio_metadata.json...</div>';
-                const audioResponse = await fetch('./src/data/audio_metadata.json');
+                const audioResponse = await fetch('./data/audio_metadata.json');
                 statusDiv.innerHTML += `<div class="status ${audioResponse.ok ? 'success' : 'error'}">
                     Audio response: ${audioResponse.status} ${audioResponse.statusText}
                 </div>`;
