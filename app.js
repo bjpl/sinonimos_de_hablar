@@ -245,8 +245,9 @@ function openModal(synonym) {
         if (culturalSection) culturalSection.style.display = 'none';
     }
 
-    modal.classList.add('is-open');
+    modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+    console.log('✅ Modal opened for:', synonym.verb);
 }
 
 // Close modal
@@ -254,12 +255,13 @@ function closeModal() {
     const modal = document.getElementById('detail-modal');
     if (!modal) return;
 
-    modal.classList.remove('is-open');
+    modal.classList.remove('active');
     if (currentAudio) {
         currentAudio.pause();
         currentAudio = null;
     }
     document.body.style.overflow = '';
+    console.log('✅ Modal closed');
 }
 
 // Scroll to content
