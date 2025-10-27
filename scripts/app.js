@@ -16,13 +16,10 @@ let currentAudio = null;
 
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🚀 App initializing...');
     await loadData();
-    console.log(`📊 Loaded ${synonymsData.length} synonyms`);
     setupEventListeners();
     renderCards(synonymsData);
     loadHeroImage();
-    console.log('✅ App initialized successfully');
 });
 
 // Load JSON data
@@ -62,7 +59,7 @@ function loadHeroImage() {
     const heroImage = document.getElementById('hero-image');
     if (heroImage) {
         heroImage.src = 'assets/images/hero/hero-hablar.jpg';
-        heroImage.alt = 'Hablar por el mundo - Sinónimos en español';
+        heroImage.alt = 'Hablar con el mundo - Sinónimos en español';
     }
 }
 
@@ -153,17 +150,11 @@ function renderCards(synonyms) {
     const grid = document.getElementById('cards-grid');
     const noResults = document.getElementById('no-results');
 
-    console.log(`🎨 Rendering ${synonyms.length} cards...`);
-
-    if (!grid) {
-        console.error('❌ Grid element not found!');
-        return;
-    }
+    if (!grid) return;
 
     grid.innerHTML = '';
 
     if (synonyms.length === 0) {
-        console.log('⚠️  No synonyms to render');
         if (noResults) noResults.style.display = 'block';
         return;
     }
@@ -174,8 +165,6 @@ function renderCards(synonyms) {
         const card = createCard(synonym, index);
         grid.appendChild(card);
     });
-
-    console.log(`✅ Rendered ${synonyms.length} cards`);
 }
 
 // Create synonym card
@@ -353,7 +342,7 @@ function openModal(synonym) {
                         </svg>
                     </button>
                 ` : '';
-                return `<li class="example-item"><span class="example-text">${highlightVerb(example, synonym.verb)}</span>${audioButton}</li>`;
+                return `<li class="example-item">${highlightVerb(example, synonym.verb)}${audioButton}</li>`;
             })
             .join('');
     }
