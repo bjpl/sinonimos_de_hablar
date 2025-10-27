@@ -95,8 +95,8 @@
       "voice": "ar_female_1",
       "region": "Argentina"
     },
-    "parlar": {
-      "file": "assets/audio/verbs/parlar.mp3",
+    "murmurar": {
+      "file": "assets/audio/verbs/murmurar.mp3",
       "voice": "ar_male_1",
       "region": "Argentina"
     }
@@ -362,23 +362,23 @@
         "region": "US"
       }
     ],
-    "parlar": [
+    "murmurar": [
       {
-        "file": "assets/audio/examples/parlar_example_1.mp3",
+        "file": "assets/audio/examples/murmurar_example_1.mp3",
         "voice": "us_female_1",
-        "text": "No para de parlar sobre el mismo tema",
+        "text": "Los estudiantes murmuraban durante el examen.",
         "region": "US"
       },
       {
-        "file": "assets/audio/examples/parlar_example_2.mp3",
+        "file": "assets/audio/examples/murmurar_example_2.mp3",
         "voice": "us_male_1",
-        "text": "Estuvo parlando toda la reunión",
+        "text": "Siempre están murmurando sobre los vecinos.",
         "region": "US"
       },
       {
-        "file": "assets/audio/examples/parlar_example_3.mp3",
+        "file": "assets/audio/examples/murmurar_example_3.mp3",
         "voice": "mx_female_1",
-        "text": "Siempre está parlando de sus viajes",
+        "text": "El viento murmuraba entre las hojas de los árboles.",
         "region": "Mexico"
       }
     ]

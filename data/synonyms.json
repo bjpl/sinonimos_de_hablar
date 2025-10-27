@@ -208,19 +208,19 @@
     "culturalNotes": "Cotorrear es muy coloquial y sugiere una conversación relajada, a veces chismosa, especialmente en México"
   },
   {
-    "verb": "parlar",
-    "pronunciation": "par-lar",
-    "quickDefinition": "To chatter, to talk incessantly",
-    "definition": "Hablar mucho y sin parar, a menudo sin decir cosas importantes",
-    "formality": "informal",
-    "context": "coloquial",
+    "verb": "murmurar",
+    "pronunciation": "mur-mu-rar",
+    "quickDefinition": "Hablar en voz baja; criticar a espaldas",
+    "definition": "Hablar en voz baja, casi en secreto; también significa criticar o hablar mal de alguien que está ausente. En América Latina, es común para describir tanto el susurro como el chisme discreto.",
+    "formality": "neutral",
+    "context": "cotidiano",
     "regions": ["general"],
-    "image": "assets/images/synonyms/parlar.jpg",
+    "image": "assets/images/synonyms/murmurar.jpg",
     "examples": [
-      "No para de parlar sobre el mismo tema",
-      "Estuvo parlando toda la reunión",
-      "Siempre está parlando de sus viajes"
+      "Los estudiantes murmuraban durante el examen.",
+      "Siempre están murmurando sobre los vecinos.",
+      "El viento murmuraba entre las hojas de los árboles."
     ],
-    "culturalNotes": "Parlar tiene una connotación ligeramente negativa, implicando hablar demasiado o sin sustancia"
+    "culturalNotes": "En América Latina, murmurar tiene una connotación dual: puede ser íntimo y romántico (susurros de amor) o negativo (chisme). Es universal en todas las regiones hispanohablantes y aparece frecuentemente en la literatura de García Márquez."
   }
 ]
