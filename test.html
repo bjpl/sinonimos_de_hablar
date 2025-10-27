@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test - Sinónimos de Hablar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; }
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Data Loading Test</h1>
+    <div id="status"></div>
+    <div id="results"></div>
+
+    <script>
+        const statusDiv = document.getElementById('status');
+        const resultsDiv = document.getElementById('results');
+
+        async function testDataLoading() {
+            statusDiv.innerHTML = '<div class="status">Testing data loading...</div>';
+
+            try {
+                // Test 1: Load synonyms
+                statusDiv.innerHTML += '<div class="status">Fetching synonyms.json...</div>';
+                const synonymsResponse = await fetch('./src/data/synonyms.json');
+                statusDiv.innerHTML += `<div class="status ${synonymsResponse.ok ? 'success' : 'error'}">
+                    Synonyms response: ${synonymsResponse.status} ${synonymsResponse.statusText}
+                </div>`;
+
+                const synonymsData = await synonymsResponse.json();
+                statusDiv.innerHTML += `<div class="status success">
+                    ✓ Loaded ${synonymsData.length} synonyms
+                </div>`;
+
+                // Test 2: Load image credits
+                statusDiv.innerHTML += '<div class="status">Fetching image_credits.json...</div>';
+                const creditsResponse = await fetch('./src/data/image_credits.json');
+                statusDiv.innerHTML += `<div class="status ${creditsResponse.ok ? 'success' : 'error'}">
+                    Credits response: ${creditsResponse.status} ${creditsResponse.statusText}
+                </div>`;
+
+                const creditsData = await creditsResponse.json();
+                const imageCount = Object.keys(creditsData.images || {}).length;
+                statusDiv.innerHTML += `<div class="status success">
+                    ✓ Loaded ${imageCount} image credits
+                </div>`;
+
+                // Test 3: Load audio metadata
+                statusDiv.innerHTML += '<div class="status">Fetching audio_metadata.json...</div>';
+                const audioResponse = await fetch('./src/data/audio_metadata.json');
+                statusDiv.innerHTML += `<div class="status ${audioResponse.ok ? 'success' : 'error'}">
+                    Audio response: ${audioResponse.status} ${audioResponse.statusText}
+                </div>`;
+
+                const audioData = await audioResponse.json();
+                statusDiv.innerHTML += `<div class="status success">
+                    ✓ Loaded audio metadata
+                </div>`;
+
+                // Display first synonym
+                resultsDiv.innerHTML = `
+                    <h2>First Synonym Data:</h2>
+                    <pre>${JSON.stringify(synonymsData[0], null, 2)}</pre>
+
+                    <h2>All Synonyms:</h2>
+                    <ul>
+                        ${synonymsData.map(s => `<li><strong>${s.verb}</strong>: ${s.quickDefinition}</li>`).join('')}
+                    </ul>
+                `;
+
+            } catch (error) {
+                statusDiv.innerHTML += `<div class="status error">
+                    ✗ Error: ${error.message}
+                </div>`;
+                resultsDiv.innerHTML = `<pre>Error details:\n${error.stack}</pre>`;
+            }
+        }
+
+        // Run test on load
+        testDataLoading();
+    </script>
+</body>
+</html>
