@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .card { border: 2px solid #3d2e1f; padding: 15px; margin: 10px; border-radius: 8px; display: inline-block; width: 200px; }
+        .verb { font-size: 24px; font-weight: bold; color: #3d2e1f; }
+        .def { color: #6b5d4f; margin-top: 5px; }
+        img { width: 100%; border-radius: 4px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Simple Load Test - Sinónimos de Hablar</h1>
+    <div id="status"></div>
+    <div id="cards" style="display: flex; flex-wrap: wrap;"></div>
+
+    <script>
+        console.log('🧪 Simple test starting...');
+        const status = document.getElementById('status');
+        const cards = document.getElementById('cards');
+
+        fetch('data/synonyms.json')
+            .then(r => {
+                console.log('Response status:', r.status);
+                status.innerHTML = `<p>✅ Fetch successful: ${r.status}</p>`;
+                return r.json();
+            })
+            .then(data => {
+                console.log('Data loaded:', data.length, 'verbs');
+                status.innerHTML += `<p>✅ Loaded: ${data.length} verbs</p>`;
+
+                data.forEach(v => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="verb">${v.verb}</div>
+                        <div class="def">${v.quickDefinition}</div>
+                        <img src="${v.image}" alt="${v.verb}">
+                    `;
+                    cards.appendChild(card);
+                });
+
+                console.log('✅ Rendered', data.length, 'cards');
+                status.innerHTML += `<p>✅ Rendered ${data.length} cards</p>`;
+            })
+            .catch(err => {
+                console.error('❌ Error:', err);
+                status.innerHTML = `<p style="color: red;">❌ Error: ${err.message}</p>`;
+            });
+    </script>
+</body>
+</html>
