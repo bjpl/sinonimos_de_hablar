@@ -1,0 +1,23 @@
+{
+  "conversar": [
+    {
+      "text": "Algunos pudieron conocerla y conversar con ella",
+      "source": "Collins Spanish Corpus",
+      "quality": "corpus"
+    }
+  ],
+  "decir": [
+    {
+      "text": "¿Qué gigantes? —dijo Sancho Panza",
+      "source": "Cervantes, Don Quijote (1605)",
+      "quality": "classic"
+    }
+  ],
+  "murmurar": [
+    {
+      "text": "«Debían ser como tres mil», murmuró",
+      "source": "García Márquez, Cien años de soledad (1967)",
+      "quality": "nobel"
+    }
+  ]
+}
