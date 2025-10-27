@@ -171,7 +171,17 @@ function createCard(synonym, index) {
     const card = document.createElement('div');
     card.className = 'synonym-card';
     card.style.animationDelay = `${index * 0.05}s`;
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-label', `${synonym.verb} - ${synonym.quickDefinition}. Click for details`);
+
     card.onclick = () => openModal(synonym);
+    card.onkeydown = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openModal(synonym);
+        }
+    };
 
     const verbKey = synonym.verb;
     const credit = imageCredits?.images?.[verbKey];
@@ -249,6 +259,13 @@ function openModal(synonym) {
 
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+
+    // Focus on close button for accessibility
+    const closeButton = modal.querySelector('.modal-close');
+    if (closeButton) {
+        setTimeout(() => closeButton.focus(), 100);
+    }
+
     console.log('✅ Modal opened for:', synonym.verb);
 }
 
