@@ -173,14 +173,14 @@ function applyFilters() {
 
     let isVisible = true;
 
-    // Search filter (case-insensitive, matches verb or translation)
+    // Search filter (case-insensitive, matches verb or definition)
     if (search) {
       const searchLower = search.toLowerCase();
       const matchesVerb = verb.verb.toLowerCase().includes(searchLower);
-      const matchesTranslation = verb.translation.toLowerCase().includes(searchLower);
+      const matchesQuickDef = verb.quickDefinition.toLowerCase().includes(searchLower);
       const matchesDefinition = verb.definition.toLowerCase().includes(searchLower);
 
-      isVisible = matchesVerb || matchesTranslation || matchesDefinition;
+      isVisible = matchesVerb || matchesQuickDef || matchesDefinition;
     }
 
     // Formality filter
@@ -190,7 +190,7 @@ function applyFilters() {
 
     // Context filter
     if (isVisible && context !== 'all') {
-      isVisible = verb.contexts.includes(context);
+      isVisible = verb.context === context;
     }
 
     // Show/hide card
