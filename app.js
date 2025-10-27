@@ -6,6 +6,7 @@
 // Load image credits and audio metadata
 let imageCredits = {};
 let audioMetadata = {};
+let authenticExamples = {};
 
 // Load synonyms data
 let synonymsData = [];
@@ -50,6 +51,16 @@ async function loadData() {
             audioMetadata = await audioResponse.json();
         } catch (err) {
             console.log('Audio not available');
+        }
+
+        // Load authentic examples (optional, non-breaking)
+        try {
+            const authResponse = await fetch('data/authentic_examples.json');
+            authenticExamples = await authResponse.json();
+            console.log('✅ Loaded authentic examples');
+        } catch (err) {
+            console.log('ℹ️  Authentic examples not loaded (optional)');
+            authenticExamples = {};
         }
 
     } catch (error) {
