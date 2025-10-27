@@ -81,6 +81,12 @@ function showErrorState(message) {
  * Initialize application after data is loaded
  */
 function initializeApp() {
+  // Set hero image
+  const heroImage = document.getElementById('hero-image');
+  if (heroImage) {
+    heroImage.src = './src/assets/images/hero/hero-hablar.jpg';
+  }
+
   // Render all cards initially
   renderCards();
 
@@ -269,18 +275,18 @@ function createCard(verb, index) {
   card.dataset.verbIndex = index;
   card.setAttribute('tabindex', '0');
   card.setAttribute('role', 'button');
-  card.setAttribute('aria-label', `${verb.verb} - ${verb.translation}. Click for details.`);
+  card.setAttribute('aria-label', `${verb.verb} - ${verb.quickDefinition}. Click for details.`);
 
   // Get image credit
   const credit = getImageCredit(verb.image);
 
   card.innerHTML = `
-    <div class="card-image" style="background-image: url('./src/assets/images/${verb.image}');">
+    <div class="card-image" style="background-image: url('./${verb.image}');">
       <div class="image-credit" aria-hidden="true">${credit}</div>
     </div>
     <div class="card-content">
       <h2 class="verb-title">${verb.verb}</h2>
-      <p class="verb-translation">${verb.translation}</p>
+      <p class="verb-translation">${verb.quickDefinition}</p>
       <div class="verb-meta">
         <span class="formality-badge ${verb.formality}" aria-label="Formality: ${verb.formality}">
           ${verb.formality}
@@ -335,7 +341,7 @@ function openModal(index) {
   document.getElementById('modal-definition').textContent = verb.definition;
 
   const modalImage = document.getElementById('modal-image');
-  modalImage.src = `./src/assets/images/${verb.image}`;
+  modalImage.src = `./${verb.image}`;
   modalImage.alt = verb.verb;
 
   document.getElementById('modal-image-credit').textContent = getImageCredit(verb.image);
