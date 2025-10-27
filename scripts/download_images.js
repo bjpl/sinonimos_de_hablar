@@ -87,7 +87,7 @@ const IMAGE_QUERIES = {
     filename: 'pronunciar.jpg'
   },
   decir: {
-    query: 'saying telling speaking words mouth close',
+    query: 'person speaking talking verbal communication speech',
     category: 'synonym',
     filename: 'decir.jpg'
   },
