@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinónimos de Hablar | Explorando el Lenguaje Oral en Español</title>
+    <meta name="description" content="Una colección elegante de sinónimos del verbo 'hablar' en español latinoamericano">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/styles/main.css">
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-image-container">
+            <img id="hero-image" src="" alt="Hablar con el mundo" class="hero-image">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <h1 class="hero-title">Sinónimos de Hablar</h1>
+            <p class="hero-subtitle">Descubre la riqueza del lenguaje oral en español</p>
+            <div class="hero-cta">
+                <button class="cta-button" onclick="scrollToContent()">
+                    Explorar
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
+        </div>
+    </header>
+
+    <!-- Search and Filter Section -->
+    <section class="controls" id="content-start">
+        <div class="container">
+            <div class="search-bar">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="M21 21l-4.35-4.35"/>
+                </svg>
+                <input type="text" id="search-input" placeholder="Buscar sinónimo..." class="search-input">
+            </div>
+
+            <div class="filters">
+                <div class="filter-group">
+                    <label class="filter-label">Formalidad</label>
+                    <select id="formality-filter" class="filter-select">
+                        <option value="all">Todas</option>
+                        <option value="formal">Formal</option>
+                        <option value="neutral">Neutral</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Contexto</label>
+                    <select id="context-filter" class="filter-select">
+                        <option value="all">Todos los contextos</option>
+                        <option value="cotidiano">Cotidiano</option>
+                        <option value="literario">Literario</option>
+                        <option value="narrativo">Narrativo</option>
+                        <option value="profesional">Profesional</option>
+                    </select>
+                </div>
+
+                <button class="reset-button" id="reset-filters">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                        <path d="M21 3v5h-5"/>
+                        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                        <path d="M3 21v-5h5"/>
+                    </svg>
+                    Resetear
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Synonym Cards Grid -->
+    <main class="main-content">
+        <div class="container">
+            <div class="cards-grid" id="cards-grid">
+                <!-- Cards will be dynamically inserted here -->
+            </div>
+
+            <div class="no-results" id="no-results" style="display: none;">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="M21 21l-4.35-4.35"/>
+                </svg>
+                <h3>No se encontraron resultados</h3>
+                <p>Intenta ajustar tus filtros o búsqueda</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Detail Modal -->
+    <div class="modal" id="detail-modal">
+        <div class="modal-backdrop" onclick="closeModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <div class="modal-body">
+                <div class="modal-image-container">
+                    <img id="modal-image" src="" alt="" class="modal-image">
+                    <div class="modal-image-credit" id="modal-image-credit"></div>
+                </div>
+
+                <div class="modal-details">
+                    <div class="modal-header">
+                        <h2 class="modal-verb" id="modal-verb"></h2>
+                        <span class="modal-pronunciation" id="modal-pronunciation">
+                            <span id="modal-audio-button"></span>
+                            <span id="modal-pronunciation-text"></span>
+                        </span>
+                    </div>
+
+                    <div class="modal-tags" id="modal-tags"></div>
+
+                    <div class="modal-section">
+                        <h3 class="section-title">Definición</h3>
+                        <p class="modal-definition" id="modal-definition"></p>
+                    </div>
+
+                    <div class="modal-section">
+                        <h3 class="section-title">Ejemplos</h3>
+                        <ul class="examples-list" id="modal-examples"></ul>
+                    </div>
+
+                    <div class="modal-section" id="modal-cultural-section">
+                        <h3 class="section-title">Notas Culturales</h3>
+                        <p class="modal-cultural" id="modal-cultural"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">
+                Imágenes cortesía de
+                <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a>
+            </p>
+            <p class="footer-copyright">
+                &copy; 2025 Sinónimos de Hablar. Una herramienta educativa.
+            </p>
+        </div>
+    </footer>
+
+    <script src="src/scripts/app.js"></script>
+</body>
+</html>
