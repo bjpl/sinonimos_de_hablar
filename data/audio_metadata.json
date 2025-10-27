@@ -1,318 +1,385 @@
 {
-  "generated_at": "2025-10-26T22:50:00.000Z",
-  "voice_provider": "gTTS",
+  "generated_at": "2025-10-26T23:00:00.000Z",
+  "voice_provider": "Microsoft Edge TTS",
   "voice_models": [
-    "es"
+    "mx_female_1",
+    "mx_male_1",
+    "co_female_1",
+    "co_male_1",
+    "ar_female_1",
+    "ar_male_1",
+    "us_female_1",
+    "us_male_1"
   ],
+  "voices_used": {
+    "Mexico": [
+      "mx_female_1",
+      "mx_male_1"
+    ],
+    "Colombia": [
+      "co_female_1",
+      "co_male_1"
+    ],
+    "Argentina": [
+      "ar_female_1",
+      "ar_male_1"
+    ],
+    "US": [
+      "us_female_1",
+      "us_male_1"
+    ]
+  },
   "verbs": {
     "conversar": {
       "file": "assets/audio/verbs/conversar.mp3",
-      "voice": "es",
-      "duration_ms": 800
+      "voice": "mx_female_1",
+      "region": "Mexico"
     },
     "platicar": {
       "file": "assets/audio/verbs/platicar.mp3",
-      "voice": "es",
-      "duration_ms": 800
+      "voice": "mx_male_1",
+      "region": "Mexico"
     },
     "charlar": {
       "file": "assets/audio/verbs/charlar.mp3",
-      "voice": "es",
-      "duration_ms": 800
+      "voice": "co_female_1",
+      "region": "Colombia"
     },
     "dialogar": {
       "file": "assets/audio/verbs/dialogar.mp3",
-      "voice": "es",
-      "duration_ms": 800
+      "voice": "co_male_1",
+      "region": "Colombia"
     },
     "departir": {
       "file": "assets/audio/verbs/departir.mp3",
-      "voice": "es",
-      "duration_ms": 800
+      "voice": "ar_female_1",
+      "region": "Argentina"
     },
     "discutir": {
       "file": "assets/audio/verbs/discutir.mp3",
-      "voice": "es",
-      "duration_ms": 800
+      "voice": "ar_male_1",
+      "region": "Argentina"
     },
     "comunicar": {
       "file": "assets/audio/verbs/comunicar.mp3",
-      "voice": "es",
-      "duration_ms": 800
+      "voice": "us_female_1",
+      "region": "US"
     },
     "expresarse": {
       "file": "assets/audio/verbs/expresarse.mp3",
-      "voice": "es",
-      "duration_ms": 800
+      "voice": "us_male_1",
+      "region": "US"
     },
     "articular": {
       "file": "assets/audio/verbs/articular.mp3",
-      "voice": "es",
-      "duration_ms": 800
+      "voice": "mx_female_1",
+      "region": "Mexico"
     },
     "pronunciar": {
       "file": "assets/audio/verbs/pronunciar.mp3",
-      "voice": "es",
-      "duration_ms": 800
+      "voice": "mx_male_1",
+      "region": "Mexico"
     },
     "decir": {
       "file": "assets/audio/verbs/decir.mp3",
-      "voice": "es",
-      "duration_ms": 800
+      "voice": "co_female_1",
+      "region": "Colombia"
     },
     "manifestar": {
       "file": "assets/audio/verbs/manifestar.mp3",
-      "voice": "es",
-      "duration_ms": 800
+      "voice": "co_male_1",
+      "region": "Colombia"
     },
     "cotorrear": {
       "file": "assets/audio/verbs/cotorrear.mp3",
-      "voice": "es",
-      "duration_ms": 800
+      "voice": "ar_female_1",
+      "region": "Argentina"
     },
     "parlar": {
       "file": "assets/audio/verbs/parlar.mp3",
-      "voice": "es",
-      "duration_ms": 800
+      "voice": "ar_male_1",
+      "region": "Argentina"
     }
   },
   "examples": {
     "conversar": [
       {
         "file": "assets/audio/examples/conversar_example_1.mp3",
-        "voice": "es",
-        "text": "Me gusta conversar con mis amigos en el café"
+        "voice": "mx_male_1",
+        "text": "Me gusta conversar con mis amigos en el café",
+        "region": "Mexico"
       },
       {
         "file": "assets/audio/examples/conversar_example_2.mp3",
-        "voice": "es",
-        "text": "Conversamos sobre nuestros planes para el fin de semana"
+        "voice": "co_female_1",
+        "text": "Conversamos sobre nuestros planes para el fin de semana",
+        "region": "Colombia"
       },
       {
         "file": "assets/audio/examples/conversar_example_3.mp3",
-        "voice": "es",
-        "text": "Es importante conversar con la familia regularmente"
+        "voice": "co_male_1",
+        "text": "Es importante conversar con la familia regularmente",
+        "region": "Colombia"
       }
     ],
     "platicar": [
       {
         "file": "assets/audio/examples/platicar_example_1.mp3",
-        "voice": "es",
-        "text": "Vamos a platicar un rato después del trabajo"
+        "voice": "co_female_1",
+        "text": "Vamos a platicar un rato después del trabajo",
+        "region": "Colombia"
       },
       {
         "file": "assets/audio/examples/platicar_example_2.mp3",
-        "voice": "es",
-        "text": "Me encanta platicar contigo, siempre tienes historias interesantes"
+        "voice": "co_male_1",
+        "text": "Me encanta platicar contigo, siempre tienes historias interesantes",
+        "region": "Colombia"
       },
       {
         "file": "assets/audio/examples/platicar_example_3.mp3",
-        "voice": "es",
-        "text": "Platiquemos sobre lo que pasó ayer"
+        "voice": "ar_female_1",
+        "text": "Platiquemos sobre lo que pasó ayer",
+        "region": "Argentina"
       }
     ],
     "charlar": [
       {
         "file": "assets/audio/examples/charlar_example_1.mp3",
-        "voice": "es",
-        "text": "Charlamos mientras tomábamos café"
+        "voice": "co_male_1",
+        "text": "Charlamos mientras tomábamos café",
+        "region": "Colombia"
       },
       {
         "file": "assets/audio/examples/charlar_example_2.mp3",
-        "voice": "es",
-        "text": "Es agradable charlar con los vecinos"
+        "voice": "ar_female_1",
+        "text": "Es agradable charlar con los vecinos",
+        "region": "Argentina"
       },
       {
         "file": "assets/audio/examples/charlar_example_3.mp3",
-        "voice": "es",
-        "text": "Pasamos la tarde charlando en el parque"
+        "voice": "ar_male_1",
+        "text": "Pasamos la tarde charlando en el parque",
+        "region": "Argentina"
       }
     ],
     "dialogar": [
       {
         "file": "assets/audio/examples/dialogar_example_1.mp3",
-        "voice": "es",
-        "text": "Es necesario dialogar para resolver los conflictos"
+        "voice": "ar_female_1",
+        "text": "Es necesario dialogar para resolver los conflictos",
+        "region": "Argentina"
       },
       {
         "file": "assets/audio/examples/dialogar_example_2.mp3",
-        "voice": "es",
-        "text": "Las dos partes acordaron dialogar sobre el tema"
+        "voice": "ar_male_1",
+        "text": "Las dos partes acordaron dialogar sobre el tema",
+        "region": "Argentina"
       },
       {
         "file": "assets/audio/examples/dialogar_example_3.mp3",
-        "voice": "es",
-        "text": "Debemos dialogar de manera constructiva"
+        "voice": "us_female_1",
+        "text": "Debemos dialogar de manera constructiva",
+        "region": "US"
       }
     ],
     "departir": [
       {
         "file": "assets/audio/examples/departir_example_1.mp3",
-        "voice": "es",
-        "text": "Los intelectuales departían sobre filosofía"
+        "voice": "ar_male_1",
+        "text": "Los intelectuales departían sobre filosofía",
+        "region": "Argentina"
       },
       {
         "file": "assets/audio/examples/departir_example_2.mp3",
-        "voice": "es",
-        "text": "Departimos amenamente durante la cena"
+        "voice": "us_female_1",
+        "text": "Departimos amenamente durante la cena",
+        "region": "US"
       },
       {
         "file": "assets/audio/examples/departir_example_3.mp3",
-        "voice": "es",
-        "text": "Es un placer departir con personas tan cultas"
+        "voice": "us_male_1",
+        "text": "Es un placer departir con personas tan cultas",
+        "region": "US"
       }
     ],
     "discutir": [
       {
         "file": "assets/audio/examples/discutir_example_1.mp3",
-        "voice": "es",
-        "text": "Vamos a discutir las opciones disponibles"
+        "voice": "us_female_1",
+        "text": "Vamos a discutir las opciones disponibles",
+        "region": "US"
       },
       {
         "file": "assets/audio/examples/discutir_example_2.mp3",
-        "voice": "es",
-        "text": "Discutieron sobre política durante horas"
+        "voice": "us_male_1",
+        "text": "Discutieron sobre política durante horas",
+        "region": "US"
       },
       {
         "file": "assets/audio/examples/discutir_example_3.mp3",
-        "voice": "es",
-        "text": "Es importante discutir estos asuntos con calma"
+        "voice": "mx_female_1",
+        "text": "Es importante discutir estos asuntos con calma",
+        "region": "Mexico"
       }
     ],
     "comunicar": [
       {
         "file": "assets/audio/examples/comunicar_example_1.mp3",
-        "voice": "es",
-        "text": "Es fundamental comunicar nuestras necesidades"
+        "voice": "us_male_1",
+        "text": "Es fundamental comunicar nuestras necesidades",
+        "region": "US"
       },
       {
         "file": "assets/audio/examples/comunicar_example_2.mp3",
-        "voice": "es",
-        "text": "El gerente comunicó la decisión al equipo"
+        "voice": "mx_female_1",
+        "text": "El gerente comunicó la decisión al equipo",
+        "region": "Mexico"
       },
       {
         "file": "assets/audio/examples/comunicar_example_3.mp3",
-        "voice": "es",
-        "text": "Debemos comunicarnos mejor para evitar malentendidos"
+        "voice": "mx_male_1",
+        "text": "Debemos comunicarnos mejor para evitar malentendidos",
+        "region": "Mexico"
       }
     ],
     "expresarse": [
       {
         "file": "assets/audio/examples/expresarse_example_1.mp3",
-        "voice": "es",
-        "text": "Le cuesta expresarse en público"
+        "voice": "mx_female_1",
+        "text": "Le cuesta expresarse en público",
+        "region": "Mexico"
       },
       {
         "file": "assets/audio/examples/expresarse_example_2.mp3",
-        "voice": "es",
-        "text": "Necesita expresarse de manera más clara"
+        "voice": "mx_male_1",
+        "text": "Necesita expresarse de manera más clara",
+        "region": "Mexico"
       },
       {
         "file": "assets/audio/examples/expresarse_example_3.mp3",
-        "voice": "es",
-        "text": "Se expresa muy bien en varios idiomas"
+        "voice": "co_female_1",
+        "text": "Se expresa muy bien en varios idiomas",
+        "region": "Colombia"
       }
     ],
     "articular": [
       {
         "file": "assets/audio/examples/articular_example_1.mp3",
-        "voice": "es",
-        "text": "Debe articular mejor sus argumentos"
+        "voice": "mx_male_1",
+        "text": "Debe articular mejor sus argumentos",
+        "region": "Mexico"
       },
       {
         "file": "assets/audio/examples/articular_example_2.mp3",
-        "voice": "es",
-        "text": "Articula las palabras con mucha claridad"
+        "voice": "co_female_1",
+        "text": "Articula las palabras con mucha claridad",
+        "region": "Colombia"
       },
       {
         "file": "assets/audio/examples/articular_example_3.mp3",
-        "voice": "es",
-        "text": "Es importante articular bien al hablar en público"
+        "voice": "co_male_1",
+        "text": "Es importante articular bien al hablar en público",
+        "region": "Colombia"
       }
     ],
     "pronunciar": [
       {
         "file": "assets/audio/examples/pronunciar_example_1.mp3",
-        "voice": "es",
-        "text": "¿Cómo se pronuncia esta palabra?"
+        "voice": "co_female_1",
+        "text": "¿Cómo se pronuncia esta palabra?",
+        "region": "Colombia"
       },
       {
         "file": "assets/audio/examples/pronunciar_example_2.mp3",
-        "voice": "es",
-        "text": "Pronunció un discurso emocionante"
+        "voice": "co_male_1",
+        "text": "Pronunció un discurso emocionante",
+        "region": "Colombia"
       },
       {
         "file": "assets/audio/examples/pronunciar_example_3.mp3",
-        "voice": "es",
-        "text": "Es difícil pronunciar algunos sonidos en español"
+        "voice": "ar_female_1",
+        "text": "Es difícil pronunciar algunos sonidos en español",
+        "region": "Argentina"
       }
     ],
     "decir": [
       {
         "file": "assets/audio/examples/decir_example_1.mp3",
-        "voice": "es",
-        "text": "¿Qué quieres decir con eso?"
+        "voice": "co_male_1",
+        "text": "¿Qué quieres decir con eso?",
+        "region": "Colombia"
       },
       {
         "file": "assets/audio/examples/decir_example_2.mp3",
-        "voice": "es",
-        "text": "Me dijo que vendría mañana"
+        "voice": "ar_female_1",
+        "text": "Me dijo que vendría mañana",
+        "region": "Argentina"
       },
       {
         "file": "assets/audio/examples/decir_example_3.mp3",
-        "voice": "es",
-        "text": "Siempre dice la verdad"
+        "voice": "ar_male_1",
+        "text": "Siempre dice la verdad",
+        "region": "Argentina"
       }
     ],
     "manifestar": [
       {
         "file": "assets/audio/examples/manifestar_example_1.mp3",
-        "voice": "es",
-        "text": "Manifestó su desacuerdo con la propuesta"
+        "voice": "ar_female_1",
+        "text": "Manifestó su desacuerdo con la propuesta",
+        "region": "Argentina"
       },
       {
         "file": "assets/audio/examples/manifestar_example_2.mp3",
-        "voice": "es",
-        "text": "Es importante manifestar nuestras opiniones"
+        "voice": "ar_male_1",
+        "text": "Es importante manifestar nuestras opiniones",
+        "region": "Argentina"
       },
       {
         "file": "assets/audio/examples/manifestar_example_3.mp3",
-        "voice": "es",
-        "text": "El portavoz manifestó la posición oficial"
+        "voice": "us_female_1",
+        "text": "El portavoz manifestó la posición oficial",
+        "region": "US"
       }
     ],
     "cotorrear": [
       {
         "file": "assets/audio/examples/cotorrear_example_1.mp3",
-        "voice": "es",
-        "text": "Nos pusimos a cotorrear toda la tarde"
+        "voice": "ar_male_1",
+        "text": "Nos pusimos a cotorrear toda la tarde",
+        "region": "Argentina"
       },
       {
         "file": "assets/audio/examples/cotorrear_example_2.mp3",
-        "voice": "es",
-        "text": "Les encanta cotorrear sobre los vecinos"
+        "voice": "us_female_1",
+        "text": "Les encanta cotorrear sobre los vecinos",
+        "region": "US"
       },
       {
         "file": "assets/audio/examples/cotorrear_example_3.mp3",
-        "voice": "es",
-        "text": "Pasamos horas cotorreando en la fiesta"
+        "voice": "us_male_1",
+        "text": "Pasamos horas cotorreando en la fiesta",
+        "region": "US"
       }
     ],
     "parlar": [
       {
         "file": "assets/audio/examples/parlar_example_1.mp3",
-        "voice": "es",
-        "text": "No para de parlar sobre el mismo tema"
+        "voice": "us_female_1",
+        "text": "No para de parlar sobre el mismo tema",
+        "region": "US"
       },
       {
         "file": "assets/audio/examples/parlar_example_2.mp3",
-        "voice": "es",
-        "text": "Estuvo parlando toda la reunión"
+        "voice": "us_male_1",
+        "text": "Estuvo parlando toda la reunión",
+        "region": "US"
       },
       {
         "file": "assets/audio/examples/parlar_example_3.mp3",
-        "voice": "es",
-        "text": "Siempre está parlando de sus viajes"
+        "voice": "mx_female_1",
+        "text": "Siempre está parlando de sus viajes",
+        "region": "Mexico"
       }
     ]
   }
