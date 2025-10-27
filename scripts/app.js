@@ -1,545 +1,391 @@
 /**
- * Sinónimos de Hablar - Interactive Spanish Verb Learning Application
- * Main application logic for filtering, rendering, and audio playback
+ * Sinónimos de Hablar - Main Application
+ * Uses local images (no API calls needed)
  */
 
-// ============================================================================
-// Application State
-// ============================================================================
+// Load image credits and audio metadata
+let imageCredits = {};
+let audioMetadata = {};
 
-const state = {
-  synonyms: [],
-  imageCredits: {},
-  audioMetadata: {},
-  currentAudio: null,
-  filters: {
-    search: '',
-    formality: 'all',
-    context: 'all'
-  }
-};
+// Load synonyms data
+let synonymsData = [];
+let filteredSynonyms = [];
 
-// ============================================================================
-// Data Loading
-// ============================================================================
+// Audio playback state
+let currentAudio = null;
 
-/**
- * Load all required data files on application initialization
- */
-async function loadApplicationData() {
-  try {
-    // Load all data in parallel
-    const [synonymsData, creditsData, audioData] = await Promise.all([
-      fetch('./data/synonyms.json').then(response => {
-        if (!response.ok) throw new Error('Failed to load synonyms.json');
-        return response.json();
-      }),
-      fetch('./data/image_credits.json').then(response => {
-        if (!response.ok) throw new Error('Failed to load image_credits.json');
-        return response.json();
-      }),
-      fetch('./data/audio_metadata.json').then(response => {
-        if (!response.ok) throw new Error('Failed to load audio_metadata.json');
-        return response.json();
-      })
-    ]);
+// Initialize app when DOM is loaded
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadData();
+    setupEventListeners();
+    renderCards(synonymsData);
+    loadHeroImage();
+});
 
-    // Store in application state
-    state.synonyms = synonymsData || [];
-    state.imageCredits = creditsData.images || {};
-    state.audioMetadata = audioData.audio || {};
+// Load JSON data
+async function loadData() {
+    try {
+        // Load synonyms
+        const synonymsResponse = await fetch('data/synonyms.json');
+        synonymsData = await synonymsResponse.json();
+        filteredSynonyms = [...synonymsData];
 
-    // Debug logging
-    console.log('✓ Data loaded successfully');
-    console.log(`  - Synonyms: ${state.synonyms.length} verbs`);
-    console.log(`  - Image credits: ${Object.keys(state.imageCredits).length} images`);
-    console.log(`  - First verb:`, state.synonyms[0]?.verb);
+        // Load image credits
+        try {
+            const creditsResponse = await fetch('data/image_credits.json');
+            imageCredits = await creditsResponse.json();
+        } catch (err) {
+            console.log('Image credits not available');
+        }
 
-    // Initialize the application
-    initializeApp();
-  } catch (error) {
-    console.error('✗ Error loading application data:', error);
-    console.error('  Error details:', error.message);
-    showErrorState('Failed to load application data. Please refresh the page.');
-  }
+        // Load audio metadata
+        try {
+            const audioResponse = await fetch('data/audio_metadata.json');
+            audioMetadata = await audioResponse.json();
+        } catch (err) {
+            console.log('Audio not available');
+        }
+
+    } catch (error) {
+        console.error('Error loading data:', error);
+        // Fallback to empty array
+        synonymsData = [];
+        filteredSynonyms = [];
+    }
 }
 
-/**
- * Display error state to user
- */
-function showErrorState(message) {
-  const container = document.getElementById('cards-grid');
-  if (container) {
-    container.innerHTML = `
-      <div class="error-state" role="alert">
-        <h2>Error Loading Application</h2>
-        <p>${message}</p>
-        <button onclick="location.reload()">Reload Page</button>
-      </div>
-    `;
-  }
+// Load hero image
+function loadHeroImage() {
+    const heroImage = document.getElementById('hero-image');
+    if (heroImage) {
+        heroImage.src = 'assets/images/hero/hero-hablar.jpg';
+        heroImage.alt = 'Hablar por el mundo - Sinónimos en español';
+    }
 }
 
-// ============================================================================
-// Application Initialization
-// ============================================================================
-
-/**
- * Initialize application after data is loaded
- */
-function initializeApp() {
-  // Set hero image
-  const heroImage = document.getElementById('hero-image');
-  if (heroImage) {
-    heroImage.src = './assets/images/hero/hero-hablar.jpg';
-  }
-
-  // Render all cards initially
-  renderCards();
-
-  // Set up event listeners
-  setupEventListeners();
-
-  // Announce to screen readers
-  announceToScreenReader('Application loaded successfully. 14 verbs available.');
-}
-
-/**
- * Set up all event listeners for the application
- */
+// Setup event listeners
 function setupEventListeners() {
-  // Search input with debouncing
-  const searchInput = document.getElementById('search-input');
-  if (searchInput) {
-    searchInput.addEventListener('input', debounce((e) => {
-      state.filters.search = e.target.value.trim();
-      applyFilters();
-    }, 300));
-  }
-
-  // Formality filter
-  const formalityFilter = document.getElementById('formality-filter');
-  if (formalityFilter) {
-    formalityFilter.addEventListener('change', (e) => {
-      state.filters.formality = e.target.value;
-      applyFilters();
-    });
-  }
-
-  // Context filter
-  const contextFilter = document.getElementById('context-filter');
-  if (contextFilter) {
-    contextFilter.addEventListener('change', (e) => {
-      state.filters.context = e.target.value;
-      applyFilters();
-    });
-  }
-
-  // Reset button
-  const resetButton = document.getElementById('reset-filters');
-  if (resetButton) {
-    resetButton.addEventListener('click', resetFilters);
-  }
-
-  // Keyboard shortcuts
-  document.addEventListener('keydown', handleKeyboardShortcuts);
-}
-
-/**
- * Handle keyboard shortcuts for accessibility
- */
-function handleKeyboardShortcuts(e) {
-  // Escape key - close modal
-  if (e.key === 'Escape') {
-    closeModal();
-  }
-
-  // Enter key on search - focus first result
-  if (e.key === 'Enter' && e.target.id === 'search-input') {
-    const firstCard = document.querySelector('.verb-card:not([style*="display: none"])');
-    if (firstCard) {
-      firstCard.focus();
+    // Search
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', handleSearch);
     }
-  }
+
+    // Filters
+    const formalityFilter = document.getElementById('formality-filter');
+    const contextFilter = document.getElementById('context-filter');
+
+    if (formalityFilter) formalityFilter.addEventListener('change', applyFilters);
+    if (contextFilter) contextFilter.addEventListener('change', applyFilters);
+
+    // Reset button
+    const resetButton = document.getElementById('reset-filters');
+    if (resetButton) {
+        resetButton.addEventListener('click', resetFilters);
+    }
+
+    // Modal close on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
 }
 
-// ============================================================================
-// Filtering Logic
-// ============================================================================
+// Handle search
+function handleSearch(e) {
+    applyFilters();
+}
 
-/**
- * Apply all active filters and re-render cards
- */
+// Apply filters
 function applyFilters() {
-  const { search, formality, context } = state.filters;
-  let visibleCount = 0;
+    const searchInput = document.getElementById('search-input');
+    const formalityFilter = document.getElementById('formality-filter');
+    const contextFilter = document.getElementById('context-filter');
 
-  state.synonyms.forEach((verb, index) => {
-    const card = document.querySelector(`[data-verb-index="${index}"]`);
-    if (!card) return;
+    const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+    const formality = formalityFilter ? formalityFilter.value : 'all';
+    const context = contextFilter ? contextFilter.value : 'all';
 
-    let isVisible = true;
+    filteredSynonyms = synonymsData.filter(synonym => {
+        // Search filter
+        if (query && !synonym.verb.toLowerCase().includes(query) &&
+            !synonym.definition.toLowerCase().includes(query) &&
+            !synonym.quickDefinition.toLowerCase().includes(query)) {
+            return false;
+        }
 
-    // Search filter (case-insensitive, matches verb or definition)
-    if (search) {
-      const searchLower = search.toLowerCase();
-      const matchesVerb = verb.verb.toLowerCase().includes(searchLower);
-      const matchesQuickDef = verb.quickDefinition.toLowerCase().includes(searchLower);
-      const matchesDefinition = verb.definition.toLowerCase().includes(searchLower);
+        // Formality filter
+        if (formality !== 'all' && synonym.formality !== formality) {
+            return false;
+        }
 
-      isVisible = matchesVerb || matchesQuickDef || matchesDefinition;
-    }
+        // Context filter
+        if (context !== 'all' && synonym.context !== context) {
+            return false;
+        }
 
-    // Formality filter
-    if (isVisible && formality !== 'all') {
-      isVisible = verb.formality === formality;
-    }
+        return true;
+    });
 
-    // Context filter
-    if (isVisible && context !== 'all') {
-      isVisible = verb.context === context;
-    }
-
-    // Show/hide card
-    if (isVisible) {
-      card.style.display = '';
-      visibleCount++;
-    } else {
-      card.style.display = 'none';
-    }
-  });
-
-  // Show empty state if no results
-  const noResults = document.getElementById('no-results');
-  if (visibleCount === 0) {
-    noResults.style.display = 'block';
-  } else {
-    noResults.style.display = 'none';
-  }
-
-  // Announce to screen readers
-  announceToScreenReader(`Showing ${visibleCount} of ${state.synonyms.length} verbs`);
+    renderCards(filteredSynonyms);
 }
 
-/**
- * Reset all filters to default state
- */
+// Reset filters
 function resetFilters() {
-  // Reset state
-  state.filters = {
-    search: '',
-    formality: 'all',
-    context: 'all'
-  };
+    const searchInput = document.getElementById('search-input');
+    const formalityFilter = document.getElementById('formality-filter');
+    const contextFilter = document.getElementById('context-filter');
 
-  // Reset UI elements
-  const searchInput = document.getElementById('search-input');
-  if (searchInput) searchInput.value = '';
+    if (searchInput) searchInput.value = '';
+    if (formalityFilter) formalityFilter.value = 'all';
+    if (contextFilter) contextFilter.value = 'all';
 
-  const formalityFilter = document.getElementById('formality-filter');
-  if (formalityFilter) formalityFilter.value = 'all';
-
-  const contextFilter = document.getElementById('context-filter');
-  if (contextFilter) contextFilter.value = 'all';
-
-  // Re-apply filters (will show all)
-  applyFilters();
-
-  // Announce to screen readers
-  announceToScreenReader('Filters reset. Showing all verbs.');
+    filteredSynonyms = [...synonymsData];
+    renderCards(filteredSynonyms);
 }
 
-// ============================================================================
-// Rendering Functions
-// ============================================================================
+// Render synonym cards
+function renderCards(synonyms) {
+    const grid = document.getElementById('cards-grid');
+    const noResults = document.getElementById('no-results');
 
-/**
- * Render all verb cards to the DOM
- */
-function renderCards() {
-  const container = document.getElementById('cards-grid');
-  if (!container) {
-    console.error('✗ Cards container not found');
-    return;
-  }
+    if (!grid) return;
 
-  console.log(`Rendering ${state.synonyms.length} cards...`);
+    grid.innerHTML = '';
 
-  // Clear existing content
-  container.innerHTML = '';
-
-  // Create and append all cards
-  state.synonyms.forEach((verb, index) => {
-    const card = createCard(verb, index);
-    container.appendChild(card);
-  });
-
-  console.log(`✓ Rendered ${state.synonyms.length} verb cards`);
-}
-
-/**
- * Create a single verb card element
- */
-function createCard(verb, index) {
-  const card = document.createElement('article');
-  card.className = 'verb-card';
-  card.dataset.verbIndex = index;
-  card.setAttribute('tabindex', '0');
-  card.setAttribute('role', 'button');
-  card.setAttribute('aria-label', `${verb.verb} - ${verb.quickDefinition}. Click for details.`);
-
-  // Get image credit
-  const credit = getImageCredit(verb.image);
-
-  card.innerHTML = `
-    <div class="card-image" style="background-image: url('./${verb.image}');">
-      <div class="image-credit" aria-hidden="true">${credit}</div>
-    </div>
-    <div class="card-content">
-      <h2 class="verb-title">${verb.verb}</h2>
-      <p class="verb-translation">${verb.quickDefinition}</p>
-      <div class="verb-meta">
-        <span class="formality-badge ${verb.formality}" aria-label="Formality: ${verb.formality}">
-          ${verb.formality}
-        </span>
-      </div>
-      <button
-        class="audio-button"
-        aria-label="Play pronunciation for ${verb.verb}"
-        onclick="event.stopPropagation(); playAudio('${verb.audioPath}', this);">
-        <span class="audio-icon">🔊</span>
-        <span class="audio-text">Pronunciation</span>
-      </button>
-    </div>
-  `;
-
-  // Click handler for opening modal
-  card.addEventListener('click', (e) => {
-    // Don't trigger if clicking audio button
-    if (!e.target.closest('.audio-button')) {
-      openModal(index);
-    }
-  });
-
-  // Keyboard support for card activation
-  card.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      openModal(index);
-    }
-  });
-
-  return card;
-}
-
-// ============================================================================
-// Modal Functions
-// ============================================================================
-
-/**
- * Open modal with verb details
- */
-function openModal(index) {
-  const verb = state.synonyms[index];
-  if (!verb) return;
-
-  const modal = document.getElementById('detail-modal');
-  if (!modal) return;
-
-  // Populate modal content
-  document.getElementById('modal-verb').textContent = verb.verb;
-  document.getElementById('modal-pronunciation-text').textContent = verb.pronunciation;
-  document.getElementById('modal-definition').textContent = verb.definition;
-
-  const modalImage = document.getElementById('modal-image');
-  modalImage.src = `./${verb.image}`;
-  modalImage.alt = verb.verb;
-
-  document.getElementById('modal-image-credit').textContent = getImageCredit(verb.image);
-
-  // Populate examples
-  const examplesList = document.getElementById('modal-examples');
-  examplesList.innerHTML = verb.examples.map(ex => `<li>${ex}</li>`).join('');
-
-  // Show/hide cultural notes
-  const culturalSection = document.getElementById('modal-cultural-section');
-  const culturalText = document.getElementById('modal-cultural');
-  if (verb.culturalNotes) {
-    culturalText.textContent = verb.culturalNotes;
-    culturalSection.style.display = 'block';
-  } else {
-    culturalSection.style.display = 'none';
-  }
-
-  // Show modal
-  modal.classList.add('is-open');
-  document.body.style.overflow = 'hidden';
-
-  // Announce to screen readers
-  announceToScreenReader(`Opened details for ${verb.verb}`);
-}
-
-/**
- * Close the modal
- */
-function closeModal() {
-  const modal = document.getElementById('detail-modal');
-  if (!modal) return;
-
-  // Hide modal
-  modal.classList.remove('is-open');
-
-  // Stop any playing audio
-  if (state.currentAudio) {
-    state.currentAudio.pause();
-    state.currentAudio = null;
-  }
-
-  // Restore body scroll
-  document.body.style.overflow = '';
-}
-
-/**
- * Scroll to content section
- */
-function scrollToContent() {
-  const contentStart = document.getElementById('content-start');
-  if (contentStart) {
-    contentStart.scrollIntoView({ behavior: 'smooth' });
-  }
-}
-
-// ============================================================================
-// Audio Player
-// ============================================================================
-
-/**
- * Play audio file with error handling
- */
-function playAudio(audioPath, buttonElement) {
-  // Stop current audio if playing
-  if (state.currentAudio) {
-    state.currentAudio.pause();
-    state.currentAudio.currentTime = 0;
-  }
-
-  // Remove all playing indicators
-  document.querySelectorAll('.audio-button.playing').forEach(btn => {
-    btn.classList.remove('playing');
-  });
-
-  try {
-    // Create new audio instance
-    const audio = new Audio(`./src/assets/audio/${audioPath}`);
-    state.currentAudio = audio;
-
-    // Add playing indicator
-    if (buttonElement) {
-      buttonElement.classList.add('playing');
+    if (synonyms.length === 0) {
+        if (noResults) noResults.style.display = 'block';
+        return;
     }
 
-    // Handle audio end
-    audio.addEventListener('ended', () => {
-      if (buttonElement) {
-        buttonElement.classList.remove('playing');
-      }
-      state.currentAudio = null;
+    if (noResults) noResults.style.display = 'none';
+
+    synonyms.forEach((synonym, index) => {
+        const card = createCard(synonym, index);
+        grid.appendChild(card);
     });
-
-    // Handle audio error
-    audio.addEventListener('error', () => {
-      console.error(`Failed to load audio: ${audioPath}`);
-      if (buttonElement) {
-        buttonElement.classList.remove('playing');
-      }
-      announceToScreenReader('Audio failed to load');
-    });
-
-    // Play audio
-    audio.play().catch(error => {
-      console.error('Error playing audio:', error);
-      if (buttonElement) {
-        buttonElement.classList.remove('playing');
-      }
-      announceToScreenReader('Error playing audio');
-    });
-
-  } catch (error) {
-    console.error('Error creating audio:', error);
-    if (buttonElement) {
-      buttonElement.classList.remove('playing');
-    }
-  }
 }
 
-// ============================================================================
-// Utility Functions
-// ============================================================================
+// Create synonym card
+function createCard(synonym, index) {
+    const card = document.createElement('div');
+    card.className = 'synonym-card';
+    card.style.animationDelay = `${index * 0.05}s`;
+    card.onclick = () => openModal(synonym);
 
-/**
- * Get image credit for a given image filename
- */
-function getImageCredit(imageName) {
-  const credit = state.imageCredits[imageName];
-  if (!credit) {
-    return 'Photo by Unknown';
-  }
+    // Get image credit if available
+    const verbKey = synonym.verb;
+    const credit = imageCredits?.images?.[verbKey];
 
-  return `Photo by ${credit.photographer}${credit.source ? ` on ${credit.source}` : ''}`;
+    card.innerHTML = `
+        <div class="card-image-container">
+            <img src="${synonym.image}" alt="${synonym.verb}" class="card-image" loading="lazy">
+            ${credit ? `<div class="image-credit">Foto: ${credit.photographer}</div>` : ''}
+            <div class="card-overlay">
+                <div class="card-overlay-content">
+                    <p class="overlay-definition">${synonym.quickDefinition}</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-content">
+            <h3 class="card-verb">${synonym.verb}</h3>
+            <span class="card-pronunciation">
+                ${createAudioButton(synonym.verb, 'verb')}
+                ${synonym.pronunciation}
+            </span>
+            <div class="card-tags">
+                ${createTag(synonym.formality, 'formality')}
+                ${createTag(synonym.context, 'context')}
+            </div>
+        </div>
+    `;
+
+    return card;
 }
 
-/**
- * Debounce function for search input
- */
-function debounce(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
+// Create tag element
+function createTag(text, type) {
+    const icons = {
+        formal: '👔',
+        neutral: '💬',
+        informal: '🗣️',
+        profesional: '💼',
+        literario: '📚',
+        cotidiano: '🌟',
+        coloquial: '💭',
+        narrativo: '📖'
     };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
+
+    const icon = icons[text] || '';
+    return `<span class="tag tag-${type}">${icon} ${text}</span>`;
 }
 
-/**
- * Announce message to screen readers
- */
-function announceToScreenReader(message) {
-  let liveRegion = document.getElementById('aria-live-region');
+// Create audio button
+function createAudioButton(verb, type) {
+    const audioFile = audioMetadata?.verbs?.[verb]?.file;
+    if (!audioFile) return '';
 
-  // Create live region if it doesn't exist
-  if (!liveRegion) {
-    liveRegion = document.createElement('div');
-    liveRegion.id = 'aria-live-region';
-    liveRegion.className = 'sr-only';
-    liveRegion.setAttribute('role', 'status');
-    liveRegion.setAttribute('aria-live', 'polite');
-    liveRegion.setAttribute('aria-atomic', 'true');
-    document.body.appendChild(liveRegion);
-  }
-
-  // Update message
-  liveRegion.textContent = message;
+    return `
+        <button class="audio-button"
+                onclick="playAudio('${audioFile}', this)"
+                aria-label="Pronunciar ${verb}"
+                title="Escuchar pronunciación">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+        </button>
+    `;
 }
 
-// ============================================================================
-// Application Entry Point
-// ============================================================================
+// Play audio file
+function playAudio(audioFile, buttonElement) {
+    // Stop any currently playing audio
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        // Remove playing class from all buttons
+        document.querySelectorAll('.audio-button.playing, .example-audio-button.playing')
+            .forEach(btn => btn.classList.remove('playing'));
+    }
 
-/**
- * Initialize application when DOM is ready
- */
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', loadApplicationData);
-} else {
-  loadApplicationData();
+    // Create and play new audio
+    currentAudio = new Audio(audioFile);
+
+    // Add playing class
+    if (buttonElement) {
+        buttonElement.classList.add('playing');
+    }
+
+    // Remove playing class when done
+    currentAudio.onended = () => {
+        if (buttonElement) {
+            buttonElement.classList.remove('playing');
+        }
+        currentAudio = null;
+    };
+
+    // Play
+    currentAudio.play().catch(err => {
+        console.error('Audio playback failed:', err);
+        if (buttonElement) {
+            buttonElement.classList.remove('playing');
+        }
+    });
 }
 
-// Export functions to global scope for inline event handlers
+// Make playAudio globally available
 window.playAudio = playAudio;
-window.resetFilters = resetFilters;
-window.openModal = openModal;
+
+// Open detail modal
+function openModal(synonym) {
+    const modal = document.getElementById('detail-modal');
+    if (!modal) return;
+
+    // Populate modal content
+    document.getElementById('modal-verb').textContent = synonym.verb;
+
+    // Add pronunciation with audio button
+    const modalAudioButton = document.getElementById('modal-audio-button');
+    const modalPronText = document.getElementById('modal-pronunciation-text');
+    if (modalAudioButton && modalPronText) {
+        modalAudioButton.innerHTML = createAudioButton(synonym.verb, 'verb');
+        modalPronText.textContent = synonym.pronunciation;
+    }
+
+    document.getElementById('modal-definition').textContent = synonym.definition;
+
+    // Image
+    const modalImage = document.getElementById('modal-image');
+    if (modalImage) {
+        modalImage.src = synonym.image;
+        modalImage.alt = synonym.verb;
+    }
+
+    // Image credit
+    const verbKey = synonym.verb;
+    const credit = imageCredits?.images?.[verbKey];
+    const creditElement = document.getElementById('modal-image-credit');
+    if (creditElement && credit) {
+        creditElement.innerHTML = `
+            Foto por <a href="${credit.photographerUrl}" target="_blank" rel="noopener">${credit.photographer}</a>
+            en <a href="${credit.unsplashUrl}" target="_blank" rel="noopener">Unsplash</a>
+        `;
+    }
+
+    // Tags
+    const tagsContainer = document.getElementById('modal-tags');
+    if (tagsContainer) {
+        tagsContainer.innerHTML = `
+            ${createTag(synonym.formality, 'formality')}
+            ${createTag(synonym.context, 'context')}
+        `;
+    }
+
+    // Examples with audio
+    const examplesList = document.getElementById('modal-examples');
+    if (examplesList) {
+        const examplesAudio = audioMetadata?.examples?.[synonym.verb] || [];
+        examplesList.innerHTML = synonym.examples
+            .map((example, i) => {
+                const audioFile = examplesAudio[i]?.file;
+                const audioButton = audioFile ? `
+                    <button class="example-audio-button"
+                            onclick="playAudio('${audioFile}', this)"
+                            aria-label="Escuchar ejemplo"
+                            title="Escuchar ejemplo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        </svg>
+                    </button>
+                ` : '';
+                return `<li class="example-item"><span class="example-text">${highlightVerb(example, synonym.verb)}</span>${audioButton}</li>`;
+            })
+            .join('');
+    }
+
+    // Cultural notes
+    if (synonym.culturalNotes) {
+        const culturalSection = document.getElementById('modal-cultural-section');
+        const culturalText = document.getElementById('modal-cultural');
+        if (culturalSection && culturalText) {
+            culturalSection.style.display = 'block';
+            culturalText.textContent = synonym.culturalNotes;
+        }
+    }
+
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Close modal
+function closeModal() {
+    const modal = document.getElementById('detail-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+// Highlight verb in example
+function highlightVerb(text, verb) {
+    const verbRoot = verb.substring(0, verb.length - 2); // Remove -ar, -er, -ir ending
+    const regex = new RegExp(`\\b${verbRoot}\\w*\\b`, 'gi');
+    return text.replace(regex, match => `<strong class="highlighted-verb">${match}</strong>`);
+}
+
+// Scroll to content
+function scrollToContent() {
+    const contentStart = document.getElementById('content-start');
+    if (contentStart) {
+        contentStart.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// Make closeModal available globally
 window.closeModal = closeModal;
 window.scrollToContent = scrollToContent;
