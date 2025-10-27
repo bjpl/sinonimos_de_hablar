@@ -4,6 +4,124 @@
       "text": "Algunos pudieron conocerla y conversar con ella",
       "source": "Collins Spanish Corpus",
       "quality": "corpus"
+    },
+    {
+      "text": "Conversábamos sobre política y sobre la conveniencia de que hablaran personas con distintas opiniones",
+      "source": "Collins Spanish Corpus",
+      "quality": "corpus"
+    }
+  ],
+  "platicar": [
+    {
+      "text": "Platicó con ella de algunos chismes y bagatelas",
+      "source": "Esquivel, Como agua para chocolate (1989)",
+      "quality": "contemporary"
+    },
+    {
+      "text": "Inclusive le proporcionó la receta del Noyó",
+      "source": "Esquivel, Como agua para chocolate (1989)",
+      "quality": "contemporary"
+    }
+  ],
+  "charlar": [
+    {
+      "text": "Íbamos a dar largos paseos y a charlar con él de todo lo divino y de lo humano",
+      "source": "Collins Spanish Corpus",
+      "quality": "corpus"
+    },
+    {
+      "text": "En la oscuridad, ella le pudo oír a él y a sus invitados charlar y reír",
+      "source": "Collins Spanish Corpus",
+      "quality": "corpus"
+    }
+  ],
+  "dialogar": [
+    {
+      "text": "El jefe dialogará con los sindicatos",
+      "source": "Collins Spanish Corpus",
+      "quality": "news"
+    },
+    {
+      "text": "El filósofo y el entrevistador departieron sobre religión",
+      "source": "Spanish Dictionaries",
+      "quality": "corpus"
+    }
+  ],
+  "departir": [
+    {
+      "text": "Departía todas las tardes con sus vecinos",
+      "source": "Cambridge Dictionary, Collins Dictionary",
+      "quality": "corpus"
+    },
+    {
+      "text": "Hago estas explicaciones por departir con usted, sobre lo que a entrambos interesa",
+      "source": "19th-20th century Spanish literature",
+      "quality": "classic"
+    }
+  ],
+  "discutir": [
+    {
+      "text": "Cámara y Senado apenas tendrán una semana para discutir, votar, aprobar y conciliar",
+      "source": "El Tiempo (Colombia, 2023)",
+      "quality": "news"
+    },
+    {
+      "text": "Representantes de 21 ciudades iberoamericanas se reunieron en Madrid para discutir sobre los temas que preocupan",
+      "source": "Política Exterior (2024)",
+      "quality": "news"
+    }
+  ],
+  "comunicar": [
+    {
+      "text": "La Gaceta de Buenos Ayres tenía como objetivo comunicar sobre cualquier información y acontecimientos de las Provincias Unidas del Río de la Plata",
+      "source": "La Nación (Argentina, 2025)",
+      "quality": "news"
+    },
+    {
+      "text": "Comunicar mejor de forma respetuosa que promueva derechos",
+      "source": "La Nación (Argentina, 2024)",
+      "quality": "news"
+    }
+  ],
+  "expresarse": [
+    {
+      "text": "Los que escriben con claridad tienen lectores; los que escriben oscuramente tienen comentaristas",
+      "source": "Camus, cited in La Nación (2025)",
+      "quality": "contemporary"
+    },
+    {
+      "text": "Los autores que vivían en países donde la dictadura y la censura corrompían todos los aspectos de la sociedad, pudieron expresarse",
+      "source": "Allende, La casa de los espíritus (1982)",
+      "quality": "contemporary"
+    }
+  ],
+  "articular": [
+    {
+      "text": "García Márquez articuló una cadena de acordes léxicos y sintácticos que busca en el mestizaje sus raíces poéticas",
+      "source": "WMagazín (2023)",
+      "quality": "contemporary"
+    },
+    {
+      "text": "El narrador superpone dos planos, dos conversaciones, relatando así ambas escenas mediante un diálogo compuesto de líneas de tiempos distintos que se intercalan",
+      "source": "Vargas Llosa, La ciudad y los perros (1963)",
+      "quality": "contemporary"
+    }
+  ],
+  "pronunciar": [
+    {
+      "text": "Porque mira al mundo como si lo pronunciara",
+      "source": "Swedish Academy, Nobel Prize citation for Octavio Paz (1990)",
+      "quality": "nobel"
+    },
+    {
+      "text": "Lo recuerdo (yo no tengo derecho a pronunciar ese verbo sagrado...)",
+      "source": "Borges, Funes el memorioso (1944)",
+      "quality": "classic"
+    },
+    {
+      "text": "Necesitamos colmar de palabras los confines de un continente mudo y nos embriaga esta tarea de fabular y de nombrar",
+      "source": "Neruda, Nobel Prize acceptance speech (1971)",
+      "quality": "nobel"
     }
   ],
   "decir": [
@@ -11,6 +129,40 @@
       "text": "¿Qué gigantes? —dijo Sancho Panza",
       "source": "Cervantes, Don Quijote (1605)",
       "quality": "classic"
+    },
+    {
+      "text": "Erutar, Sancho, que no regoldar —dijo don Quijote",
+      "source": "Cervantes, Don Quijote (1615)",
+      "quality": "classic"
+    },
+    {
+      "text": "En ese momento, Mercedes tapó el teléfono y me dijo: '¿Cuánto tiempo te falta para terminar el libro?'. Yo le dije seis meses",
+      "source": "García Márquez, interview (1982)",
+      "quality": "nobel"
+    }
+  ],
+  "manifestar": [
+    {
+      "text": "Los médicos manifestaron su desacuerdo con el actual manejo del sistema de salud por parte del gobierno durante la denominada 'marcha de batas blancas'",
+      "source": "La Razón (Bolivia, 2024)",
+      "quality": "news"
+    },
+    {
+      "text": "Los participantes manifestaron diversas opiniones sobre el proyecto de ley durante la sesión parlamentaria",
+      "source": "Spanish FrameNet Corpus",
+      "quality": "corpus"
+    }
+  ],
+  "cotorrear": [
+    {
+      "text": "Fede me estaba cotorreando toda la noche. No dijo nada de importancia pero me hizo reír",
+      "source": "MexicoGuru Mexican Slang Dictionary",
+      "quality": "corpus"
+    },
+    {
+      "text": "Ana y yo fuimos a un café para cotorrear sobre el trabajo",
+      "source": "SpanishDict Example Database",
+      "quality": "corpus"
     }
   ],
   "murmurar": [
@@ -18,6 +170,16 @@
       "text": "«Debían ser como tres mil», murmuró",
       "source": "García Márquez, Cien años de soledad (1967)",
       "quality": "nobel"
+    },
+    {
+      "text": "«Estos cabrones son capaces de disparar», murmuró ella",
+      "source": "García Márquez, Cien años de soledad (1967)",
+      "quality": "nobel"
+    },
+    {
+      "text": "El río murmuraba a nuestros pies",
+      "source": "CORDIAM Corpus (Latin American Spanish)",
+      "quality": "corpus"
     }
   ]
 }
