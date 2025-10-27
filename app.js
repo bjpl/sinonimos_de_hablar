@@ -302,8 +302,8 @@ function openModal(synonym) {
         modalImage.alt = synonym.verb;
     }
 
-    const verbKey = synonym.verb;
-    const credit = imageCredits?.images?.[verbKey];
+    // Use existing verbKey from card creation scope or get from synonym
+    const credit = imageCredits?.images?.[synonym.verb];
     const creditElement = document.getElementById('modal-image-credit');
     if (creditElement && credit) {
         const photogName = credit.photographer?.name || credit.photographer;
