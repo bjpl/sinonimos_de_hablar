@@ -46,7 +46,7 @@ async function loadApplicationData() {
 
     // Store in application state
     state.synonyms = synonymsData || [];
-    state.imageCredits = creditsData.credits || {};
+    state.imageCredits = creditsData.images || {};
     state.audioMetadata = audioData.audio || {};
 
     // Initialize the application
