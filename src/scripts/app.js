@@ -49,10 +49,17 @@ async function loadApplicationData() {
     state.imageCredits = creditsData.images || {};
     state.audioMetadata = audioData.audio || {};
 
+    // Debug logging
+    console.log('✓ Data loaded successfully');
+    console.log(`  - Synonyms: ${state.synonyms.length} verbs`);
+    console.log(`  - Image credits: ${Object.keys(state.imageCredits).length} images`);
+    console.log(`  - First verb:`, state.synonyms[0]?.verb);
+
     // Initialize the application
     initializeApp();
   } catch (error) {
-    console.error('Error loading application data:', error);
+    console.error('✗ Error loading application data:', error);
+    console.error('  Error details:', error.message);
     showErrorState('Failed to load application data. Please refresh the page.');
   }
 }
@@ -252,9 +259,11 @@ function resetFilters() {
 function renderCards() {
   const container = document.getElementById('cards-grid');
   if (!container) {
-    console.error('Cards container not found');
+    console.error('✗ Cards container not found');
     return;
   }
+
+  console.log(`Rendering ${state.synonyms.length} cards...`);
 
   // Clear existing content
   container.innerHTML = '';
@@ -264,6 +273,8 @@ function renderCards() {
     const card = createCard(verb, index);
     container.appendChild(card);
   });
+
+  console.log(`✓ Rendered ${state.synonyms.length} verb cards`);
 }
 
 /**
