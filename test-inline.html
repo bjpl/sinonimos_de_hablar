@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inline Test - Sinónimos de Hablar</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-image-container">
+            <img id="hero-image" src="assets/images/hero/hero-hablar.jpg" alt="Hablar con el mundo" class="hero-image">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <h1 class="hero-title">Sinónimos de Hablar - TEST</h1>
+            <p class="hero-subtitle">Inline Data Test Version</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="cards-grid" id="cards-grid">
+                <!-- Cards will be rendered here -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Inline data for testing
+        const testData = [
+            {
+                "verb": "conversar",
+                "pronunciation": "con-ver-sar",
+                "quickDefinition": "To converse, to have a conversation",
+                "definition": "Mantener una plática o diálogo con otra persona de manera informal y amigable",
+                "formality": "neutral",
+                "context": "cotidiano",
+                "regions": ["general"],
+                "image": "assets/images/synonyms/conversar.jpg"
+            },
+            {
+                "verb": "platicar",
+                "pronunciation": "pla-ti-car",
+                "quickDefinition": "To chat, to talk casually",
+                "definition": "Charlar o hablar de manera informal, especialmente común en México y Centroamérica",
+                "formality": "informal",
+                "context": "cotidiano",
+                "regions": ["México", "Centroamérica"],
+                "image": "assets/images/synonyms/platicar.jpg"
+            }
+        ];
+
+        console.log('🧪 Inline Test - Starting...');
+        console.log(`📊 Test data: ${testData.length} verbs`);
+
+        function renderTestCards() {
+            const grid = document.getElementById('cards-grid');
+            if (!grid) {
+                console.error('❌ Grid not found');
+                return;
+            }
+
+            console.log('🎨 Rendering cards...');
+
+            testData.forEach(verb => {
+                const card = document.createElement('div');
+                card.className = 'verb-card';
+                card.style.cssText = 'border: 2px solid #3d2e1f; padding: 20px; margin: 10px; border-radius: 8px;';
+                card.innerHTML = `
+                    <h2 style="color: #3d2e1f; margin: 0 0 10px 0;">${verb.verb}</h2>
+                    <p style="color: #6b5d4f; margin: 0;">${verb.quickDefinition}</p>
+                    <div style="margin-top: 10px;">
+                        <img src="${verb.image}" alt="${verb.verb}" style="width: 100%; max-width: 300px; border-radius: 4px;">
+                    </div>
+                    <p style="margin-top: 10px; font-style: italic;">${verb.definition}</p>
+                `;
+                grid.appendChild(card);
+            });
+
+            console.log(`✅ Rendered ${testData.length} cards`);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('✅ DOM loaded');
+            renderTestCards();
+        });
+    </script>
+</body>
+</html>
