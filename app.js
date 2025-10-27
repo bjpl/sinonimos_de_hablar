@@ -198,16 +198,94 @@ function createCard(synonym, index) {
         </div>
         <div class="card-content">
             <h3 class="card-verb">${synonym.verb}</h3>
-            <span class="card-pronunciation">${synonym.pronunciation}</span>
+            <span class="card-pronunciation">
+                ${createAudioButton(synonym.verb, 'verb')}
+                ${synonym.pronunciation}
+            </span>
             <div class="card-tags">
-                <span class="tag tag-formality">${synonym.formality}</span>
-                <span class="tag tag-context">${synonym.context}</span>
+                ${createTag(synonym.formality, 'formality')}
+                ${createTag(synonym.context, 'context')}
             </div>
         </div>
     `;
 
     return card;
 }
+
+// Create tag element
+function createTag(text, type) {
+    const icons = {
+        formal: '👔',
+        neutral: '💬',
+        informal: '🗣️',
+        profesional: '💼',
+        literario: '📚',
+        cotidiano: '🌟',
+        coloquial: '💭',
+        narrativo: '📖'
+    };
+
+    const icon = icons[text] || '';
+    return `<span class="tag tag-${type}">${icon} ${text}</span>`;
+}
+
+// Create audio button
+function createAudioButton(verb, type) {
+    const audioFile = audioMetadata?.verbs?.[verb]?.file;
+    if (!audioFile) return '';
+
+    return `
+        <button class="audio-button"
+                onclick="playAudio('${audioFile}', this)"
+                aria-label="Pronunciar ${verb}"
+                title="Escuchar pronunciación">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+        </button>
+    `;
+}
+
+// Play audio file
+function playAudio(audioFile, buttonElement) {
+    // Stop any currently playing audio
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        // Remove playing class from all buttons
+        document.querySelectorAll('.audio-button.playing, .example-audio-button.playing')
+            .forEach(btn => btn.classList.remove('playing'));
+    }
+
+    // Create and play new audio
+    currentAudio = new Audio(audioFile);
+
+    // Add playing class
+    if (buttonElement) {
+        buttonElement.classList.add('playing');
+    }
+
+    // Remove playing class when done
+    currentAudio.onended = () => {
+        if (buttonElement) {
+            buttonElement.classList.remove('playing');
+        }
+        currentAudio = null;
+    };
+
+    // Play
+    currentAudio.play().catch(err => {
+        console.error('Audio playback failed:', err);
+        if (buttonElement) {
+            buttonElement.classList.remove('playing');
+        }
+    });
+}
+
+// Make playAudio globally available
+window.playAudio = playAudio;
 
 // Open modal
 function openModal(synonym) {
@@ -233,18 +311,39 @@ function openModal(synonym) {
         creditElement.innerHTML = `Foto por <a href="${photogUrl}" target="_blank" rel="noopener">${photogName}</a> en Unsplash`;
     }
 
+    // Add pronunciation with audio button
+    const modalAudioButton = document.getElementById('modal-audio-button');
+    if (modalAudioButton) {
+        modalAudioButton.innerHTML = createAudioButton(synonym.verb, 'verb');
+    }
+
     const tagsContainer = document.getElementById('modal-tags');
     if (tagsContainer) {
         tagsContainer.innerHTML = `
-            <span class="tag tag-formality">${synonym.formality}</span>
-            <span class="tag tag-context">${synonym.context}</span>
+            ${createTag(synonym.formality, 'formality')}
+            ${createTag(synonym.context, 'context')}
         `;
     }
 
+    // Examples with audio
     const examplesList = document.getElementById('modal-examples');
     if (examplesList) {
+        const examplesAudio = audioMetadata?.examples?.[synonym.verb] || [];
         examplesList.innerHTML = synonym.examples
-            .map(example => `<li>${example}</li>`)
+            .map((example, i) => {
+                const audioFile = examplesAudio[i]?.file;
+                const audioButton = audioFile ? `
+                    <button class="example-audio-button"
+                            onclick="playAudio('${audioFile}', this)"
+                            aria-label="Escuchar ejemplo"
+                            title="Escuchar ejemplo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        </svg>
+                    </button>
+                ` : '';
+                return `<li>${audioButton} ${example}</li>`;
+            })
             .join('');
     }
 
