@@ -367,6 +367,30 @@ function openModal(synonym) {
         if (culturalSection) culturalSection.style.display = 'none';
     }
 
+    // Display authentic examples if available (simple, non-breaking)
+    const authSection = document.getElementById('modal-authentic-section');
+    const authList = document.getElementById('modal-authentic-list');
+    const verbExamples = authenticExamples[synonym.verb];
+
+    if (verbExamples && verbExamples.length > 0 && authList) {
+        const qualityIcons = { 'nobel': '🏆', 'classic': '📖', 'corpus': '📊' };
+
+        authList.innerHTML = verbExamples.map(ex => `
+            <div style="margin-bottom: 1rem; padding: 1rem; background: #f5f1ed; border-radius: 8px;">
+                <div style="font-style: italic; color: #3d2e1f; margin-bottom: 0.5rem;">
+                    ${qualityIcons[ex.quality] || '📚'} "${ex.text}"
+                </div>
+                <div style="font-size: 0.875rem; color: #6b5d4f;">
+                    — ${ex.source}
+                </div>
+            </div>
+        `).join('');
+
+        if (authSection) authSection.style.display = 'block';
+    } else {
+        if (authSection) authSection.style.display = 'none';
+    }
+
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
