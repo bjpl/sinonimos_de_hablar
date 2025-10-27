@@ -7,7 +7,7 @@
     "formality": "neutral",
     "context": "cotidiano",
     "regions": ["general"],
-    "image": "assets/images/synonyms/conversar.jpg",
+    "image": "src/assets/images/synonyms/conversar.jpg",
     "examples": [
       "Me gusta conversar con mis amigos en el café",
       "Conversamos sobre nuestros planes para el fin de semana",
@@ -23,7 +23,7 @@
     "formality": "informal",
     "context": "cotidiano",
     "regions": ["México", "Centroamérica"],
-    "image": "assets/images/synonyms/platicar.jpg",
+    "image": "src/assets/images/synonyms/platicar.jpg",
     "examples": [
       "Vamos a platicar un rato después del trabajo",
       "Me encanta platicar contigo, siempre tienes historias interesantes",
@@ -39,7 +39,7 @@
     "formality": "informal",
     "context": "cotidiano",
     "regions": ["general", "España"],
-    "image": "assets/images/synonyms/charlar.jpg",
+    "image": "src/assets/images/synonyms/charlar.jpg",
     "examples": [
       "Charlamos mientras tomábamos café",
       "Es agradable charlar con los vecinos",
@@ -55,7 +55,7 @@
     "formality": "formal",
     "context": "profesional",
     "regions": ["general"],
-    "image": "assets/images/synonyms/dialogar.jpg",
+    "image": "src/assets/images/synonyms/dialogar.jpg",
     "examples": [
       "Es necesario dialogar para resolver los conflictos",
       "Las dos partes acordaron dialogar sobre el tema",
@@ -71,7 +71,7 @@
     "formality": "formal",
     "context": "literario",
     "regions": ["general"],
-    "image": "assets/images/synonyms/departir.jpg",
+    "image": "src/assets/images/synonyms/departir.jpg",
     "examples": [
       "Los intelectuales departían sobre filosofía",
       "Departimos amenamente durante la cena",
@@ -87,7 +87,7 @@
     "formality": "neutral",
     "context": "profesional",
     "regions": ["general"],
-    "image": "assets/images/synonyms/discutir.jpg",
+    "image": "src/assets/images/synonyms/discutir.jpg",
     "examples": [
       "Vamos a discutir las opciones disponibles",
       "Discutieron sobre política durante horas",
@@ -103,7 +103,7 @@
     "formality": "neutral",
     "context": "profesional",
     "regions": ["general"],
-    "image": "assets/images/synonyms/comunicar.jpg",
+    "image": "src/assets/images/synonyms/comunicar.jpg",
     "examples": [
       "Es fundamental comunicar nuestras necesidades",
       "El gerente comunicó la decisión al equipo",
@@ -119,7 +119,7 @@
     "formality": "neutral",
     "context": "personal",
     "regions": ["general"],
-    "image": "assets/images/synonyms/expresarse.jpg",
+    "image": "src/assets/images/synonyms/expresarse.jpg",
     "examples": [
       "Le cuesta expresarse en público",
       "Necesita expresarse de manera más clara",
@@ -135,7 +135,7 @@
     "formality": "formal",
     "context": "técnico",
     "regions": ["general"],
-    "image": "assets/images/synonyms/articular.jpg",
+    "image": "src/assets/images/synonyms/articular.jpg",
     "examples": [
       "Debe articular mejor sus argumentos",
       "Articula las palabras con mucha claridad",
@@ -151,7 +151,7 @@
     "formality": "neutral",
     "context": "técnico",
     "regions": ["general"],
-    "image": "assets/images/synonyms/pronunciar.jpg",
+    "image": "src/assets/images/synonyms/pronunciar.jpg",
     "examples": [
       "¿Cómo se pronuncia esta palabra?",
       "Pronunció un discurso emocionante",
@@ -167,7 +167,7 @@
     "formality": "neutral",
     "context": "universal",
     "regions": ["general"],
-    "image": "assets/images/synonyms/decir.jpg",
+    "image": "src/assets/images/synonyms/decir.jpg",
     "examples": [
       "¿Qué quieres decir con eso?",
       "Me dijo que vendría mañana",
@@ -183,7 +183,7 @@
     "formality": "formal",
     "context": "profesional",
     "regions": ["general"],
-    "image": "assets/images/synonyms/manifestar.jpg",
+    "image": "src/assets/images/synonyms/manifestar.jpg",
     "examples": [
       "Manifestó su desacuerdo con la propuesta",
       "Es importante manifestar nuestras opiniones",
@@ -199,7 +199,7 @@
     "formality": "informal",
     "context": "coloquial",
     "regions": ["México", "Latinoamérica"],
-    "image": "assets/images/synonyms/cotorrear.jpg",
+    "image": "src/assets/images/synonyms/cotorrear.jpg",
     "examples": [
       "Nos pusimos a cotorrear toda la tarde",
       "Les encanta cotorrear sobre los vecinos",
@@ -215,7 +215,7 @@
     "formality": "informal",
     "context": "coloquial",
     "regions": ["general"],
-    "image": "assets/images/synonyms/parlar.jpg",
+    "image": "src/assets/images/synonyms/parlar.jpg",
     "examples": [
       "No para de parlar sobre el mismo tema",
       "Estuvo parlando toda la reunión",
