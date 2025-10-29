@@ -16,11 +16,6 @@
       "text": "Platicó con ella de algunos chismes y bagatelas",
       "source": "Esquivel, Como agua para chocolate (1989)",
       "quality": "contemporary"
-    },
-    {
-      "text": "Inclusive le proporcionó la receta del Noyó",
-      "source": "Esquivel, Como agua para chocolate (1989)",
-      "quality": "contemporary"
     }
   ],
   "charlar": [
@@ -40,11 +35,6 @@
       "text": "El jefe dialogará con los sindicatos",
       "source": "Collins Spanish Corpus",
       "quality": "news"
-    },
-    {
-      "text": "El filósofo y el entrevistador departieron sobre religión",
-      "source": "Spanish Dictionaries",
-      "quality": "corpus"
     }
   ],
   "departir": [
@@ -85,11 +75,6 @@
   ],
   "expresarse": [
     {
-      "text": "Los que escriben con claridad tienen lectores; los que escriben oscuramente tienen comentaristas",
-      "source": "Camus, cited in La Nación (2025)",
-      "quality": "contemporary"
-    },
-    {
       "text": "Los autores que vivían en países donde la dictadura y la censura corrompían todos los aspectos de la sociedad, pudieron expresarse",
       "source": "Allende, La casa de los espíritus (1982)",
       "quality": "contemporary"
@@ -99,11 +84,6 @@
     {
       "text": "García Márquez articuló una cadena de acordes léxicos y sintácticos que busca en el mestizaje sus raíces poéticas",
       "source": "WMagazín (2023)",
-      "quality": "contemporary"
-    },
-    {
-      "text": "El narrador superpone dos planos, dos conversaciones, relatando así ambas escenas mediante un diálogo compuesto de líneas de tiempos distintos que se intercalan",
-      "source": "Vargas Llosa, La ciudad y los perros (1963)",
       "quality": "contemporary"
     }
   ],
@@ -117,11 +97,6 @@
       "text": "Lo recuerdo (yo no tengo derecho a pronunciar ese verbo sagrado...)",
       "source": "Borges, Funes el memorioso (1944)",
       "quality": "classic"
-    },
-    {
-      "text": "Necesitamos colmar de palabras los confines de un continente mudo y nos embriaga esta tarea de fabular y de nombrar",
-      "source": "Neruda, Nobel Prize acceptance speech (1971)",
-      "quality": "nobel"
     }
   ],
   "decir": [
