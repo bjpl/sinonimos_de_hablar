@@ -1,0 +1,277 @@
+# Enhanced .gitignore for Public Repository
+# Prevents accidental exposure of sensitive files
+
+# ============================================
+# Environment Variables & Secrets
+# ============================================
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.test
+
+# API keys and secrets
+**/secrets/
+**/*secret*
+**/*key*.txt
+**/credentials.*
+**/*password*
+**/*token*
+
+# ============================================
+# Claude Flow / AI Development Infrastructure
+# ============================================
+.claude/
+.claude-flow/
+.hive-mind/
+.swarm/
+coordination/
+memory/
+.mcp.json
+claude-flow.cmd
+claude-flow.config.json
+hive-mind-prompt-*.txt
+
+# Agent/Swarm generated files
+memory/claude-flow-data.json
+memory/claude-flow@alpha-data.json
+memory/sessions/*
+!memory/sessions/README.md
+memory/agents/*
+!memory/agents/README.md
+coordination/memory_bank/*
+coordination/subtasks/*
+coordination/orchestration/*
+
+# ============================================
+# Database Files
+# ============================================
+*.db
+*.db-journal
+*.db-wal
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+
+# ============================================
+# Build Scripts with API Keys/Credentials
+# ============================================
+scripts/download_*.js
+scripts/*_api.js
+scripts/*_scraper.js
+scripts/generate_*.py
+scripts/*_credentials.*
+
+# Keep safe build scripts
+!scripts/build.js
+!scripts/deploy.js
+
+# ============================================
+# Test Files
+# ============================================
+test.html
+test-*.html
+*test*.html
+simple-test.html
+debug.html
+sandbox.html
+
+# Test directories
+tests/temp/
+tests/fixtures/temp/
+
+# ============================================
+# Development Documentation
+# ============================================
+*PARITY*.md
+*DEPLOYMENT*.md
+*INTERNAL*.md
+CHECK_*.md
+DEBUG_*.md
+TEMP_*.md
+NOTES_*.md
+
+# Keep important docs
+!README.md
+!CONTRIBUTING.md
+!LICENSE.md
+!SECURITY.md
+!docs/README.md
+
+# ============================================
+# Operating System Files
+# ============================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ============================================
+# Editor & IDE Files
+# ============================================
+# VSCode
+.vscode/
+*.code-workspace
+
+# JetBrains
+.idea/
+*.iml
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*.swn
+*~
+.vim/
+
+# Emacs
+*~
+\#*\#
+.\#*
+auto-save-list
+tramp
+
+# ============================================
+# Build & Dependencies
+# ============================================
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+.npm
+.yarn
+.pnp.*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ============================================
+# Logs
+# ============================================
+*.log
+logs/
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# ============================================
+# Temporary Files
+# ============================================
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+.cache/
+temp/
+tmp/
+
+# ============================================
+# Backup Files
+# ============================================
+*.orig
+*.backup.*
+*~
+*.swp
+
+# ============================================
+# Media Processing Temporary Files
+# ============================================
+*.processing
+*.download
+assets/temp/
+assets/processing/
+
+# ============================================
+# Git Specific
+# ============================================
+*.patch
+*.diff
+*.rej
+
+# ============================================
+# Security Scanner Reports
+# ============================================
+security-report.html
+vulnerability-scan.json
+audit-report.*
+
+# ============================================
+# Analytics & Tracking (if added later)
+# ============================================
+analytics-config.json
+tracking-*.js
+ga-config.js
+
+# ============================================
+# CI/CD Secrets
+# ============================================
+.github/secrets/
+.gitlab-ci-secrets.yml
+.circleci/config.local.yml
+
+# ============================================
+# Miscellaneous
+# ============================================
+.vercel
+.netlify
+.cloudflare
+
+# macOS Finder attributes
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+
+# Windows folder config
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Editor backups
+*.kate-swp
+.*.sw?
+
+# ============================================
+# Project-Specific
+# ============================================
+# Keep generated assets that should be committed
+!assets/images/**/*.jpg
+!assets/images/**/*.png
+!assets/audio/**/*.mp3
+
+# But ignore processing temp files
+assets/images/temp/
+assets/audio/temp/
