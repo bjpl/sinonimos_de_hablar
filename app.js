@@ -398,7 +398,8 @@ function closeModal() {
 // Highlight verb in example
 function highlightVerb(text, verb) {
     const verbRoot = verb.substring(0, verb.length - 2); // Remove -ar, -er, -ir ending
-    const regex = new RegExp(`\\b${verbRoot}\\w*\\b`, 'gi');
+    // Enhanced regex to handle accented characters (á, é, í, ó, ú)
+    const regex = new RegExp(`\\b(${verbRoot}[a-záéíóúüñ]*)\\b`, 'gi');
     return text.replace(regex, match => `<strong class="highlighted-verb">${match}</strong>`);
 }
 
