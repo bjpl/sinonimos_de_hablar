@@ -531,6 +531,24 @@ body {
     margin-top: var(--spacing-sm);
 }
 
+/* Highlighted verb styling - prevent word breaks */
+.highlighted-verb {
+  display: inline !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  hyphens: none !important;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.example-item .highlighted-verb,
+.examples-list .highlighted-verb,
+.modal-examples .highlighted-verb {
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+}
+
 .tag {
     padding: 0.35rem 0.75rem;
     font-size: 0.85rem;
