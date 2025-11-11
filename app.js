@@ -1,12 +1,11 @@
 /**
- * Sinónimos de Hablar - Main Application (Root Level)
- * STANDALONE VERSION - All paths from root
+ * Sinónimos de Caminar - Main Application
+ * Uses local images (no API calls needed)
  */
 
 // Load image credits and audio metadata
 let imageCredits = {};
 let audioMetadata = {};
-let authenticExamples = {};
 
 // Load synonyms data
 let synonymsData = [];
@@ -17,25 +16,19 @@ let currentAudio = null;
 
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🚀 App starting from ROOT app.js...');
     await loadData();
-    console.log(`📊 Loaded ${synonymsData.length} verbs`);
     setupEventListeners();
     renderCards(synonymsData);
     loadHeroImage();
-    console.log('✅ Initialization complete');
 });
 
 // Load JSON data
 async function loadData() {
     try {
         // Load synonyms
-        console.log('📥 Fetching data/synonyms.json...');
         const synonymsResponse = await fetch('data/synonyms.json');
-        console.log('Response:', synonymsResponse.status);
         synonymsData = await synonymsResponse.json();
         filteredSynonyms = [...synonymsData];
-        console.log('✅ Loaded', synonymsData.length, 'synonyms');
 
         // Load image credits
         try {
@@ -53,18 +46,9 @@ async function loadData() {
             console.log('Audio not available');
         }
 
-        // Load authentic examples (optional, non-breaking)
-        try {
-            const authResponse = await fetch('data/authentic_examples.json');
-            authenticExamples = await authResponse.json();
-            console.log('✅ Loaded authentic examples');
-        } catch (err) {
-            console.log('ℹ️  Authentic examples not loaded (optional)');
-            authenticExamples = {};
-        }
-
     } catch (error) {
-        console.error('❌ Error loading data:', error);
+        console.error('Error loading data:', error);
+        // Fallback to empty array
         synonymsData = [];
         filteredSynonyms = [];
     }
@@ -74,32 +58,43 @@ async function loadData() {
 function loadHeroImage() {
     const heroImage = document.getElementById('hero-image');
     if (heroImage) {
-        heroImage.src = 'assets/images/hero/hero-hablar.jpg';
-        console.log('✅ Hero image set');
+        heroImage.src = 'assets/images/hero/hero-walking.jpg';
+        heroImage.alt = 'Caminar por el mundo - Sinónimos en español';
     }
 }
 
 // Setup event listeners
 function setupEventListeners() {
+    // Search
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
-        searchInput.addEventListener('input', applyFilters);
+        searchInput.addEventListener('input', handleSearch);
     }
 
+    // Filters
     const formalityFilter = document.getElementById('formality-filter');
     const contextFilter = document.getElementById('context-filter');
 
     if (formalityFilter) formalityFilter.addEventListener('change', applyFilters);
     if (contextFilter) contextFilter.addEventListener('change', applyFilters);
 
+    // Reset button
     const resetButton = document.getElementById('reset-filters');
     if (resetButton) {
         resetButton.addEventListener('click', resetFilters);
     }
 
+    // Modal close on Escape
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
+        if (e.key === 'Escape') {
+            closeModal();
+        }
     });
+}
+
+// Handle search
+function handleSearch(e) {
+    applyFilters();
 }
 
 // Apply filters
@@ -113,16 +108,19 @@ function applyFilters() {
     const context = contextFilter ? contextFilter.value : 'all';
 
     filteredSynonyms = synonymsData.filter(synonym => {
+        // Search filter
         if (query && !synonym.verb.toLowerCase().includes(query) &&
             !synonym.definition.toLowerCase().includes(query) &&
             !synonym.quickDefinition.toLowerCase().includes(query)) {
             return false;
         }
 
+        // Formality filter
         if (formality !== 'all' && synonym.formality !== formality) {
             return false;
         }
 
+        // Context filter
         if (context !== 'all' && synonym.context !== context) {
             return false;
         }
@@ -152,17 +150,11 @@ function renderCards(synonyms) {
     const grid = document.getElementById('cards-grid');
     const noResults = document.getElementById('no-results');
 
-    console.log(`🎨 Rendering ${synonyms.length} cards...`);
-
-    if (!grid) {
-        console.error('❌ Grid element #cards-grid not found!');
-        return;
-    }
+    if (!grid) return;
 
     grid.innerHTML = '';
 
     if (synonyms.length === 0) {
-        console.log('⚠️ No synonyms to display');
         if (noResults) noResults.style.display = 'block';
         return;
     }
@@ -173,8 +165,6 @@ function renderCards(synonyms) {
         const card = createCard(synonym, index);
         grid.appendChild(card);
     });
-
-    console.log(`✅ Successfully rendered ${synonyms.length} cards`);
 }
 
 // Create synonym card
@@ -182,25 +172,38 @@ function createCard(synonym, index) {
     const card = document.createElement('div');
     card.className = 'synonym-card';
     card.style.animationDelay = `${index * 0.05}s`;
-    card.setAttribute('tabindex', '0');
-    card.setAttribute('role', 'button');
-    card.setAttribute('aria-label', `${synonym.verb} - ${synonym.quickDefinition}. Click for details`);
 
-    card.onclick = () => openModal(synonym);
-    card.onkeydown = (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
+    // CRITICAL: Don't trigger modal if clicking story button
+    card.onclick = (e) => {
+        if (!e.target.closest('.story-button')) {
             openModal(synonym);
         }
     };
 
+    // Get image credit if available
     const verbKey = synonym.verb;
     const credit = imageCredits?.images?.[verbKey];
+
+    // Check if narrative experience exists
+    const hasNarrative = synonym.narrativeExperience && synonym.narrativeExperience.title;
 
     card.innerHTML = `
         <div class="card-image-container">
             <img src="${synonym.image}" alt="${synonym.verb}" class="card-image" loading="lazy">
-            ${credit ? `<div class="image-credit">Foto: ${credit.photographer.name}</div>` : ''}
+            ${credit ? `<div class="image-credit">Foto: ${credit.photographer}</div>` : ''}
+
+            ${hasNarrative ? `
+                <button class="story-button" onclick="openNarrative('${synonym.verb}', event)"
+                        aria-label="Leer narrativa de ${synonym.verb}"
+                        title="Experiencia narrativa literaria">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                    <span class="story-label">Historia</span>
+                </button>
+            ` : ''}
+
             <div class="card-overlay">
                 <div class="card-overlay-content">
                     <p class="overlay-definition">${synonym.quickDefinition}</p>
@@ -298,36 +301,43 @@ function playAudio(audioFile, buttonElement) {
 // Make playAudio globally available
 window.playAudio = playAudio;
 
-// Open modal
+// Open detail modal
 function openModal(synonym) {
     const modal = document.getElementById('detail-modal');
     if (!modal) return;
 
+    // Populate modal content
     document.getElementById('modal-verb').textContent = synonym.verb;
-    document.getElementById('modal-pronunciation-text').textContent = synonym.pronunciation;
+
+    // Add pronunciation with audio button
+    const modalAudioButton = document.getElementById('modal-audio-button');
+    const modalPronText = document.getElementById('modal-pronunciation-text');
+    if (modalAudioButton && modalPronText) {
+        modalAudioButton.innerHTML = createAudioButton(synonym.verb, 'verb');
+        modalPronText.textContent = synonym.pronunciation;
+    }
+
     document.getElementById('modal-definition').textContent = synonym.definition;
 
+    // Image
     const modalImage = document.getElementById('modal-image');
     if (modalImage) {
         modalImage.src = synonym.image;
         modalImage.alt = synonym.verb;
     }
 
-    // Use existing verbKey from card creation scope or get from synonym
-    const credit = imageCredits?.images?.[synonym.verb];
+    // Image credit
+    const verbKey = synonym.verb;
+    const credit = imageCredits?.images?.[verbKey];
     const creditElement = document.getElementById('modal-image-credit');
     if (creditElement && credit) {
-        const photogName = credit.photographer?.name || credit.photographer;
-        const photogUrl = credit.photographer?.profile_url || credit.photo?.unsplash_url || '#';
-        creditElement.innerHTML = `Foto por <a href="${photogUrl}" target="_blank" rel="noopener">${photogName}</a> en Unsplash`;
+        creditElement.innerHTML = `
+            Foto por <a href="${credit.photographerUrl}" target="_blank" rel="noopener">${credit.photographer}</a>
+            en <a href="${credit.unsplashUrl}" target="_blank" rel="noopener">Unsplash</a>
+        `;
     }
 
-    // Add pronunciation with audio button
-    const modalAudioButton = document.getElementById('modal-audio-button');
-    if (modalAudioButton) {
-        modalAudioButton.innerHTML = createAudioButton(synonym.verb, 'verb');
-    }
-
+    // Tags
     const tagsContainer = document.getElementById('modal-tags');
     if (tagsContainer) {
         tagsContainer.innerHTML = `
@@ -350,71 +360,44 @@ function openModal(synonym) {
                             title="Escuchar ejemplo">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
                         </svg>
                     </button>
                 ` : '';
-                return `<li>${audioButton} ${example}</li>`;
+                return `<li class="example-item"><span class="example-text">${highlightVerb(example, synonym.verb)}</span>${audioButton}</li>`;
             })
             .join('');
     }
 
-    const culturalSection = document.getElementById('modal-cultural-section');
-    const culturalText = document.getElementById('modal-cultural');
+    // Cultural notes
     if (synonym.culturalNotes) {
-        if (culturalText) culturalText.textContent = synonym.culturalNotes;
-        if (culturalSection) culturalSection.style.display = 'block';
-    } else {
-        if (culturalSection) culturalSection.style.display = 'none';
+        const culturalSection = document.getElementById('modal-cultural-section');
+        const culturalText = document.getElementById('modal-cultural');
+        if (culturalSection && culturalText) {
+            culturalSection.style.display = 'block';
+            culturalText.textContent = synonym.culturalNotes;
+        }
     }
 
-    // Display authentic examples if available (simple, non-breaking)
-    const authSection = document.getElementById('modal-authentic-section');
-    const authList = document.getElementById('modal-authentic-list');
-    const verbExamples = authenticExamples[synonym.verb];
-
-    if (verbExamples && verbExamples.length > 0 && authList) {
-        const qualityIcons = { 'nobel': '🏆', 'classic': '📖', 'corpus': '📊' };
-
-        authList.innerHTML = verbExamples.map(ex => `
-            <div style="margin-bottom: 1rem; padding: 1rem; background: #f5f1ed; border-radius: 8px;">
-                <div style="font-style: italic; color: #3d2e1f; margin-bottom: 0.5rem;">
-                    ${qualityIcons[ex.quality] || '📚'} "${ex.text}"
-                </div>
-                <div style="font-size: 0.875rem; color: #6b5d4f;">
-                    — ${ex.source}
-                </div>
-            </div>
-        `).join('');
-
-        if (authSection) authSection.style.display = 'block';
-    } else {
-        if (authSection) authSection.style.display = 'none';
-    }
-
+    // Show modal
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
-
-    // Focus on close button for accessibility
-    const closeButton = modal.querySelector('.modal-close');
-    if (closeButton) {
-        setTimeout(() => closeButton.focus(), 100);
-    }
-
-    console.log('✅ Modal opened for:', synonym.verb);
 }
 
 // Close modal
 function closeModal() {
     const modal = document.getElementById('detail-modal');
-    if (!modal) return;
-
-    modal.classList.remove('active');
-    if (currentAudio) {
-        currentAudio.pause();
-        currentAudio = null;
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
     }
-    document.body.style.overflow = '';
-    console.log('✅ Modal closed');
+}
+
+// Highlight verb in example
+function highlightVerb(text, verb) {
+    const verbRoot = verb.substring(0, verb.length - 2); // Remove -ar, -er, -ir ending
+    const regex = new RegExp(`\\b${verbRoot}\\w*\\b`, 'gi');
+    return text.replace(regex, match => `<strong class="highlighted-verb">${match}</strong>`);
 }
 
 // Scroll to content
@@ -425,9 +408,31 @@ function scrollToContent() {
     }
 }
 
-// Make functions globally available
-window.openModal = openModal;
+// Open narrative viewer
+async function openNarrative(verb, event) {
+    if (event) event.stopPropagation();
+
+    const synonym = synonymsData.find(s => s.verb === verb);
+    if (!synonym || !synonym.narrativeExperience) {
+        console.error('Narrative not found for:', verb);
+        return;
+    }
+
+    try {
+        const { NarrativeViewer } = await import('./components/NarrativeViewer.js');
+        const viewer = new NarrativeViewer(synonym, {
+            showProgress: true,
+            enableHighlighting: true,
+            trackCompletion: true
+        });
+        viewer.render();
+        viewer.open();
+    } catch (error) {
+        console.error('Failed to load narrative viewer:', error);
+    }
+}
+
+// Make functions available globally
 window.closeModal = closeModal;
 window.scrollToContent = scrollToContent;
-
-console.log('📜 App.js loaded successfully');
+window.openNarrative = openNarrative;
