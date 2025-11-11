@@ -42,6 +42,8 @@ async function loadData() {
         try {
             const audioResponse = await fetch('data/audio_metadata.json');
             audioMetadata = await audioResponse.json();
+            // Make available globally for NarrativeViewer
+            window.audioMetadata = audioMetadata;
         } catch (err) {
             console.log('Audio not available');
         }

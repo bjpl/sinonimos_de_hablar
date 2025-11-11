@@ -20,29 +20,15 @@ export class NarrativeViewer {
     this.currentPart = 0;
     this.element = null;
     this.currentAudio = null;
-    this.audioMetadata = null;
+    this.currentAudioFile = null;
     this.progress = this.options.trackCompletion
       ? narrativeProgress.getProgress(this.data.verb)
       : null;
 
-    // Load audio metadata
-    if (this.options.enableAudio) {
-      this._loadAudioMetadata();
-    }
-  }
-
-  /**
-   * Load audio metadata
-   * @private
-   */
-  async _loadAudioMetadata() {
-    try {
-      const response = await fetch('data/audio_metadata.json');
-      const data = await response.json();
-      this.audioMetadata = data.narratives?.[this.data.verb] || null;
-    } catch (error) {
-      console.warn('Audio metadata not available:', error);
-      this.audioMetadata = null;
+    // Get audio metadata from global scope (loaded by app.js)
+    this.audioMetadata = null;
+    if (this.options.enableAudio && typeof window.audioMetadata !== 'undefined') {
+      this.audioMetadata = window.audioMetadata?.narratives?.[this.data.verb] || null;
     }
   }
 
