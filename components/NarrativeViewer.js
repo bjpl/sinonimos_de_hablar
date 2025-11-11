@@ -70,24 +70,6 @@ export class NarrativeViewer {
               ${this._renderParts()}
             </div>
 
-            <div class="narrative-navigation">
-              <button class="nav-button nav-prev" data-action="prev" ${this.currentPart === 0 ? 'disabled' : ''}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M15 18l-6-6 6-6"/>
-                </svg>
-                Anterior
-              </button>
-              <span class="nav-indicator">
-                Parte ${this.currentPart + 1} de ${this.narrative.parts.length}
-              </span>
-              <button class="nav-button nav-next" data-action="next" ${this.currentPart === this.narrative.parts.length - 1 ? 'disabled' : ''}>
-                Siguiente
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M9 18l6-6-6-6"/>
-                </svg>
-              </button>
-            </div>
-
             <div class="narrative-note">
               <div class="note-icon">📚</div>
               <div class="note-content">
@@ -162,7 +144,11 @@ export class NarrativeViewer {
       const audioButton = this._renderPartAudioButton(index);
 
       return `
-        <div class="narrative-part ${isActive ? 'active' : ''}" data-part="${index}">
+        <div class="narrative-part ${isActive ? 'active' : ''}"
+             data-part="${index}"
+             role="button"
+             tabindex="0"
+             aria-label="Ir a parte ${index + 1}">
           <div class="part-header">
             <div class="part-number">Parte ${index + 1}</div>
             ${audioButton}
@@ -240,12 +226,18 @@ export class NarrativeViewer {
     closeBtn.onclick = () => this.close();
     backdrop.onclick = () => this.close();
 
-    const navButtons = this.element.querySelectorAll('.nav-button');
-    navButtons.forEach(btn => {
-      btn.onclick = () => {
-        const action = btn.dataset.action;
-        if (action === 'next') this.nextPart();
-        if (action === 'prev') this.prevPart();
+    // Make parts clickable
+    const parts = this.element.querySelectorAll('.narrative-part');
+    parts.forEach(part => {
+      part.onclick = (e) => {
+        // Don't navigate if clicking audio controls or highlighted verbs
+        if (e.target.closest('.narrative-audio-controls') ||
+            e.target.closest('.highlighted-verb') ||
+            e.target.closest('.audio-control-btn')) {
+          return;
+        }
+        const partIndex = parseInt(part.dataset.part);
+        this.goToPart(partIndex);
       };
     });
 
