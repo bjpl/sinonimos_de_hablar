@@ -164,6 +164,11 @@
   color: white;
   border-color: var(--color-primary);
   box-shadow: 0 4px 12px rgba(45, 49, 66, 0.2);
+  transform: translateX(2px);
+}
+
+.toc-item.active .toc-label {
+  font-weight: 600;
 }
 
 .toc-item.completed:not(.active) {
