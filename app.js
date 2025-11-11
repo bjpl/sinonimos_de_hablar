@@ -60,8 +60,8 @@ async function loadData() {
 function loadHeroImage() {
     const heroImage = document.getElementById('hero-image');
     if (heroImage) {
-        heroImage.src = 'assets/images/hero/hero-walking.jpg';
-        heroImage.alt = 'Caminar por el mundo - Sinónimos en español';
+        heroImage.src = 'assets/images/hero/hero-hablar.jpg';
+        heroImage.alt = 'Hablar con el mundo - Sinónimos en español';
     }
 }
 
