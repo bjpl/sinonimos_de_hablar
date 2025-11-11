@@ -262,6 +262,13 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+.part-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
 .part-number {
   font-family: var(--font-sans);
   font-size: 0.85rem;
@@ -269,7 +276,58 @@
   color: var(--color-secondary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-bottom: 1.5rem;
+}
+
+.narrative-audio-button {
+  background: rgba(212, 165, 116, 0.1);
+  border: 2px solid rgba(212, 165, 116, 0.3);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.narrative-audio-button:hover {
+  background: rgba(212, 165, 116, 0.2);
+  border-color: rgba(212, 165, 116, 0.5);
+  transform: scale(1.05);
+}
+
+.narrative-audio-button.playing {
+  background: rgba(212, 165, 116, 0.3);
+  border-color: rgba(212, 165, 116, 0.6);
+  animation: pulse-audio 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-audio {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.9;
+  }
+}
+
+.narrative-audio-button svg {
+  width: 20px;
+  height: 20px;
+  color: rgba(212, 165, 116, 0.8);
+  transition: color 0.3s ease;
+}
+
+.narrative-audio-button:hover svg {
+  color: rgba(212, 165, 116, 1);
+}
+
+.narrative-audio-button.playing svg {
+  color: rgba(212, 165, 116, 1);
 }
 
 .part-text {

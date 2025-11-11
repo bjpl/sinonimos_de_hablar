@@ -382,5 +382,27 @@
         "region": "Mexico"
       }
     ]
+  },
+  "narratives": {
+    "departir": [
+      {
+        "file": "assets/audio/narratives/departir_part_1.mp3",
+        "voice": "ar_female_1",
+        "region": "Argentina",
+        "text": "En la penumbra del salón literario, don Aurelio inclinó su copa de jerez mientras observaba a la joven poeta. 'Permitidme departir sobre Darío', murmuró, su voz cultivada cortando el murmullo ambiente. Ella asintió, reconociendo en aquel verbo la distancia cortés que separaba generaciones. No conversarían como iguales—departirían, como maestro y discípula, preservando la liturgia del intercambio intelectual que su abuelo habría reconocido."
+      },
+      {
+        "file": "assets/audio/narratives/departir_part_2.mp3",
+        "voice": "ar_male_1",
+        "region": "Argentina",
+        "text": "Los tertulianos departían cada jueves, sus palabras medidas como pasos de danza. Nadie 'platicaba' aquí—el verbo mismo habría roto el hechizo de formalidad que sostenía estas veladas. Don Aurelio desplegó un argumento sobre el modernismo con la parsimonia de quien sabe que departir exige tiempo, cultura compartida, y el entendimiento tácito de que la conversación es un arte, no un mero intercambio."
+      },
+      {
+        "file": "assets/audio/narratives/departir_part_3.mp3",
+        "voice": "ar_female_1",
+        "region": "Argentina",
+        "text": "Departir es el habla que se mira al espejo antes de salir. Mientras platicar invita cercanía y charlar sugiere ligereza, departir erige columnas de decoro alrededor del diálogo. Es el verbo de las tertulias extintas, de las sobremesas donde el intelecto se exhibe sin disculpas. En América Latina sobrevive como fósil lingüístico—precioso, anacrónico, perfecto para evocar épocas cuando conversar era ceremonia y las palabras se vestían de gala."
+      }
+    ]
   }
 }

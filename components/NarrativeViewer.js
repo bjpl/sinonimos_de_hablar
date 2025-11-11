@@ -13,14 +13,37 @@ export class NarrativeViewer {
       showProgress: true,
       enableHighlighting: true,
       trackCompletion: true,
+      enableAudio: true,
       ...options
     };
 
     this.currentPart = 0;
     this.element = null;
+    this.currentAudio = null;
+    this.audioMetadata = null;
     this.progress = this.options.trackCompletion
       ? narrativeProgress.getProgress(this.data.verb)
       : null;
+
+    // Load audio metadata
+    if (this.options.enableAudio) {
+      this._loadAudioMetadata();
+    }
+  }
+
+  /**
+   * Load audio metadata
+   * @private
+   */
+  async _loadAudioMetadata() {
+    try {
+      const response = await fetch('data/audio_metadata.json');
+      const data = await response.json();
+      this.audioMetadata = data.narratives?.[this.data.verb] || null;
+    } catch (error) {
+      console.warn('Audio metadata not available:', error);
+      this.audioMetadata = null;
+    }
   }
 
   /**
@@ -150,13 +173,43 @@ export class NarrativeViewer {
         ? this._highlightVerb(part)
         : part;
 
+      const audioButton = this._renderPartAudioButton(index);
+
       return `
         <div class="narrative-part ${isActive ? 'active' : ''}" data-part="${index}">
-          <div class="part-number">Parte ${index + 1}</div>
+          <div class="part-header">
+            <div class="part-number">Parte ${index + 1}</div>
+            ${audioButton}
+          </div>
           <p class="part-text">${highlightedText}</p>
         </div>
       `;
     }).join('');
+  }
+
+  /**
+   * Render audio button for a narrative part
+   * @private
+   */
+  _renderPartAudioButton(partIndex) {
+    if (!this.options.enableAudio || !this.audioMetadata || !this.audioMetadata[partIndex]) {
+      return '';
+    }
+
+    const audioData = this.audioMetadata[partIndex];
+    return `
+      <button class="narrative-audio-button"
+              data-part="${partIndex}"
+              data-audio="${audioData.file}"
+              aria-label="Escuchar narración parte ${partIndex + 1}"
+              title="Escuchar narración">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+      </button>
+    `;
   }
 
   /**
@@ -209,8 +262,65 @@ export class NarrativeViewer {
       };
     });
 
+    const audioButtons = this.element.querySelectorAll('.narrative-audio-button');
+    audioButtons.forEach(btn => {
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        const audioFile = btn.dataset.audio;
+        this._playPartAudio(audioFile, btn);
+      };
+    });
+
     this._keyboardHandler = this._handleKeyboard.bind(this);
     document.addEventListener('keydown', this._keyboardHandler);
+  }
+
+  /**
+   * Play audio for a narrative part
+   * @private
+   */
+  _playPartAudio(audioFile, buttonElement) {
+    // Stop any currently playing audio
+    if (this.currentAudio) {
+      this.currentAudio.pause();
+      this.currentAudio.currentTime = 0;
+      // Remove playing class from all audio buttons
+      this.element.querySelectorAll('.narrative-audio-button.playing')
+        .forEach(btn => btn.classList.remove('playing'));
+    }
+
+    // Create and play new audio
+    this.currentAudio = new Audio(audioFile);
+
+    // Add playing class
+    if (buttonElement) {
+      buttonElement.classList.add('playing');
+    }
+
+    // Remove playing class when done
+    this.currentAudio.onended = () => {
+      if (buttonElement) {
+        buttonElement.classList.remove('playing');
+      }
+      this.currentAudio = null;
+    };
+
+    // Handle errors
+    this.currentAudio.onerror = () => {
+      console.error('Failed to load audio:', audioFile);
+      if (buttonElement) {
+        buttonElement.classList.remove('playing');
+      }
+      this.currentAudio = null;
+    };
+
+    // Play
+    this.currentAudio.play().catch(err => {
+      console.error('Audio playback failed:', err);
+      if (buttonElement) {
+        buttonElement.classList.remove('playing');
+      }
+    });
   }
 
   /**
@@ -347,6 +457,13 @@ export class NarrativeViewer {
   }
 
   close() {
+    // Stop any playing audio
+    if (this.currentAudio) {
+      this.currentAudio.pause();
+      this.currentAudio.currentTime = 0;
+      this.currentAudio = null;
+    }
+
     if (this.options.trackCompletion) {
       narrativeProgress.markPartComplete(this.data.verb, this.currentPart);
     }
