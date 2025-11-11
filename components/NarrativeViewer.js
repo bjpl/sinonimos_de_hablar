@@ -504,13 +504,8 @@ export class NarrativeViewer {
   }
 
   _updateNavigation() {
-    const prevBtn = this.element.querySelector('.nav-prev');
-    const nextBtn = this.element.querySelector('.nav-next');
-    const indicator = this.element.querySelector('.nav-indicator');
-
-    prevBtn.disabled = this.currentPart === 0;
-    nextBtn.disabled = this.currentPart === this.narrative.parts.length - 1;
-    indicator.textContent = `Parte ${this.currentPart + 1} de ${this.narrative.parts.length}`;
+    // Navigation buttons removed - using clickable parts and TOC only
+    // This method kept for compatibility but does nothing
   }
 
   _updateTOC() {
