@@ -198,17 +198,34 @@ export class NarrativeViewer {
 
     const audioData = this.audioMetadata[partIndex];
     return `
-      <button class="narrative-audio-button"
-              data-part="${partIndex}"
-              data-audio="${audioData.file}"
-              aria-label="Escuchar narración parte ${partIndex + 1}"
-              title="Escuchar narración">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-        </svg>
-      </button>
+      <div class="narrative-audio-controls" data-part="${partIndex}" data-audio="${audioData.file}">
+        <button class="audio-control-btn play-btn active"
+                data-action="play"
+                aria-label="Reproducir narración"
+                title="Reproducir">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+        </button>
+        <button class="audio-control-btn pause-btn"
+                data-action="pause"
+                aria-label="Pausar narración"
+                title="Pausar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="4" width="4" height="16"></rect>
+            <rect x="14" y="4" width="4" height="16"></rect>
+          </svg>
+        </button>
+        <button class="audio-control-btn restart-btn"
+                data-action="restart"
+                aria-label="Reiniciar narración"
+                title="Reiniciar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+        </button>
+      </div>
     `;
   }
 
@@ -262,13 +279,17 @@ export class NarrativeViewer {
       };
     });
 
-    const audioButtons = this.element.querySelectorAll('.narrative-audio-button');
-    audioButtons.forEach(btn => {
-      btn.onclick = (e) => {
-        e.stopPropagation();
-        const audioFile = btn.dataset.audio;
-        this._playPartAudio(audioFile, btn);
-      };
+    const audioControls = this.element.querySelectorAll('.narrative-audio-controls');
+    audioControls.forEach(controlGroup => {
+      const buttons = controlGroup.querySelectorAll('.audio-control-btn');
+      buttons.forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          const action = btn.dataset.action;
+          const audioFile = controlGroup.dataset.audio;
+          this._handleAudioControl(action, audioFile, controlGroup);
+        };
+      });
     });
 
     this._keyboardHandler = this._handleKeyboard.bind(this);
@@ -276,50 +297,135 @@ export class NarrativeViewer {
   }
 
   /**
-   * Play audio for a narrative part
+   * Handle audio control actions
    * @private
    */
-  _playPartAudio(audioFile, buttonElement) {
-    // Stop any currently playing audio
-    if (this.currentAudio) {
+  _handleAudioControl(action, audioFile, controlGroup) {
+    switch (action) {
+      case 'play':
+        this._playAudio(audioFile, controlGroup);
+        break;
+      case 'pause':
+        this._pauseAudio(controlGroup);
+        break;
+      case 'restart':
+        this._restartAudio(audioFile, controlGroup);
+        break;
+    }
+  }
+
+  /**
+   * Play audio
+   * @private
+   */
+  _playAudio(audioFile, controlGroup) {
+    // If there's a different audio playing, stop it
+    if (this.currentAudio && this.currentAudioFile !== audioFile) {
       this.currentAudio.pause();
       this.currentAudio.currentTime = 0;
-      // Remove playing class from all audio buttons
-      this.element.querySelectorAll('.narrative-audio-button.playing')
-        .forEach(btn => btn.classList.remove('playing'));
+      this._resetAllControls();
     }
 
-    // Create and play new audio
+    // If same audio is paused, resume
+    if (this.currentAudio && this.currentAudioFile === audioFile) {
+      this.currentAudio.play();
+      this._setControlState(controlGroup, 'playing');
+      return;
+    }
+
+    // Create new audio
     this.currentAudio = new Audio(audioFile);
+    this.currentAudioFile = audioFile;
 
-    // Add playing class
-    if (buttonElement) {
-      buttonElement.classList.add('playing');
-    }
+    // Set playing state
+    this._setControlState(controlGroup, 'playing');
 
-    // Remove playing class when done
+    // Handle ended
     this.currentAudio.onended = () => {
-      if (buttonElement) {
-        buttonElement.classList.remove('playing');
-      }
+      this._setControlState(controlGroup, 'ended');
       this.currentAudio = null;
+      this.currentAudioFile = null;
     };
 
     // Handle errors
     this.currentAudio.onerror = () => {
       console.error('Failed to load audio:', audioFile);
-      if (buttonElement) {
-        buttonElement.classList.remove('playing');
-      }
+      this._resetAllControls();
       this.currentAudio = null;
+      this.currentAudioFile = null;
     };
 
     // Play
     this.currentAudio.play().catch(err => {
       console.error('Audio playback failed:', err);
-      if (buttonElement) {
-        buttonElement.classList.remove('playing');
-      }
+      this._resetAllControls();
+    });
+  }
+
+  /**
+   * Pause audio
+   * @private
+   */
+  _pauseAudio(controlGroup) {
+    if (this.currentAudio) {
+      this.currentAudio.pause();
+      this._setControlState(controlGroup, 'paused');
+    }
+  }
+
+  /**
+   * Restart audio
+   * @private
+   */
+  _restartAudio(audioFile, controlGroup) {
+    if (this.currentAudio) {
+      this.currentAudio.pause();
+      this.currentAudio.currentTime = 0;
+    }
+    this._playAudio(audioFile, controlGroup);
+  }
+
+  /**
+   * Set control group state
+   * @private
+   */
+  _setControlState(controlGroup, state) {
+    const playBtn = controlGroup.querySelector('.play-btn');
+    const pauseBtn = controlGroup.querySelector('.pause-btn');
+    const restartBtn = controlGroup.querySelector('.restart-btn');
+
+    // Reset all
+    playBtn.classList.remove('active');
+    pauseBtn.classList.remove('active');
+    restartBtn.classList.remove('active');
+    controlGroup.classList.remove('playing', 'paused');
+
+    // Set state
+    switch (state) {
+      case 'playing':
+        pauseBtn.classList.add('active');
+        restartBtn.classList.add('active');
+        controlGroup.classList.add('playing');
+        break;
+      case 'paused':
+        playBtn.classList.add('active');
+        restartBtn.classList.add('active');
+        controlGroup.classList.add('paused');
+        break;
+      case 'ended':
+        playBtn.classList.add('active');
+        break;
+    }
+  }
+
+  /**
+   * Reset all control groups
+   * @private
+   */
+  _resetAllControls() {
+    const allControls = this.element.querySelectorAll('.narrative-audio-controls');
+    allControls.forEach(controlGroup => {
+      this._setControlState(controlGroup, 'ended');
     });
   }
 
@@ -462,6 +568,7 @@ export class NarrativeViewer {
       this.currentAudio.pause();
       this.currentAudio.currentTime = 0;
       this.currentAudio = null;
+      this.currentAudioFile = null;
     }
 
     if (this.options.trackCompletion) {
