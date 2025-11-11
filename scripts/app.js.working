@@ -172,16 +172,38 @@ function createCard(synonym, index) {
     const card = document.createElement('div');
     card.className = 'synonym-card';
     card.style.animationDelay = `${index * 0.05}s`;
-    card.onclick = () => openModal(synonym);
+
+    // CRITICAL: Don't trigger modal if clicking story button
+    card.onclick = (e) => {
+        if (!e.target.closest('.story-button')) {
+            openModal(synonym);
+        }
+    };
 
     // Get image credit if available
     const verbKey = synonym.verb;
     const credit = imageCredits?.images?.[verbKey];
 
+    // Check if narrative experience exists
+    const hasNarrative = synonym.narrativeExperience && synonym.narrativeExperience.title;
+
     card.innerHTML = `
         <div class="card-image-container">
             <img src="${synonym.image}" alt="${synonym.verb}" class="card-image" loading="lazy">
             ${credit ? `<div class="image-credit">Foto: ${credit.photographer}</div>` : ''}
+
+            ${hasNarrative ? `
+                <button class="story-button" onclick="openNarrative('${synonym.verb}', event)"
+                        aria-label="Leer narrativa de ${synonym.verb}"
+                        title="Experiencia narrativa literaria">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                    <span class="story-label">Historia</span>
+                </button>
+            ` : ''}
+
             <div class="card-overlay">
                 <div class="card-overlay-content">
                     <p class="overlay-definition">${synonym.quickDefinition}</p>
@@ -386,6 +408,31 @@ function scrollToContent() {
     }
 }
 
-// Make closeModal available globally
+// Open narrative viewer
+async function openNarrative(verb, event) {
+    if (event) event.stopPropagation();
+
+    const synonym = synonymsData.find(s => s.verb === verb);
+    if (!synonym || !synonym.narrativeExperience) {
+        console.error('Narrative not found for:', verb);
+        return;
+    }
+
+    try {
+        const { NarrativeViewer } = await import('./components/NarrativeViewer.js');
+        const viewer = new NarrativeViewer(synonym, {
+            showProgress: true,
+            enableHighlighting: true,
+            trackCompletion: true
+        });
+        viewer.render();
+        viewer.open();
+    } catch (error) {
+        console.error('Failed to load narrative viewer:', error);
+    }
+}
+
+// Make functions available globally
 window.closeModal = closeModal;
 window.scrollToContent = scrollToContent;
+window.openNarrative = openNarrative;
