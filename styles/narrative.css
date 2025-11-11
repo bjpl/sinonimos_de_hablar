@@ -424,6 +424,7 @@
   color: var(--color-primary);
   text-align: justify;
   hyphens: auto;
+  word-spacing: normal;
 }
 
 .highlighted-verb {
@@ -449,9 +450,27 @@
 }
 
 .part-text .highlighted-verb,
-.example-item .highlighted-verb {
+.example-item .highlighted-verb,
+.narrative-part .highlighted-verb {
   white-space: nowrap !important;
   word-break: keep-all !important;
+  display: inline-block !important;
+  overflow-wrap: normal !important;
+  text-align: left !important;
+}
+
+/* Override text-align: justify for highlighted spans */
+.part-text {
+  text-align: justify;
+}
+
+.part-text > * {
+  text-align: inherit;
+}
+
+span.highlighted-verb {
+  text-align: left !important;
+  display: inline-block !important;
 }
 
 .verb-tooltip {
